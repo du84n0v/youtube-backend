@@ -1,11 +1,12 @@
 package com.youtube.entity;
 
-import com.youtube.enums.ProfileStatus;
-import com.youtube.enums.Role;
+import com.youtube.enums.ProfileStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class ProfileEntity {
 
     @Column(name = "photo_id")
     private String photoId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_id", insertable = false, updatable = false)
     private AttachEntity photo;
 
@@ -40,5 +41,9 @@ public class ProfileEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private ProfileStatus status;
+    private ProfileStatusEnum status;
+
+    @CreationTimestamp
+    @Column(name = "created_date_time")
+    private LocalDateTime createdDateTime;
 }

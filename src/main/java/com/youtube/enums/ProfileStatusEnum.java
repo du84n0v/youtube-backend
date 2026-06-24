@@ -1,6 +1,6 @@
 package com.youtube.enums;
 
-public enum ProfileStatus {
+public enum ProfileStatusEnum {
     IN_REGISTRATION,
     ACTIVE,
     BLOCKED

@@ -1,9 +1,12 @@
 package com.youtube.entity;
 
-import com.youtube.enums.Role;
+import com.youtube.enums.ProfileRoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "profile_role")
@@ -22,5 +25,9 @@ public class ProfileRoleEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Role role;
+    private ProfileRoleEnum role;
+
+    @CreationTimestamp
+    @Column(name = "created_date_time")
+    private LocalDateTime createdDateTime;
 }
