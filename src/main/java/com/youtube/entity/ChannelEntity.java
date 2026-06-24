@@ -1,6 +1,6 @@
 package com.youtube.entity;
 
-import com.youtube.enums.ChannelStatusEnum;
+import com.youtube.enums.GeneralStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class ChannelEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private ChannelStatusEnum status;
+    private GeneralStatusEnum status;
 
     @Column(name = "banner_id")
     private String bannerId;
