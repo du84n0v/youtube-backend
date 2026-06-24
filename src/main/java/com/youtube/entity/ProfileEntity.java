@@ -37,7 +37,7 @@ public class ProfileEntity {
     private AttachEntity photo;
 
     @OneToMany(mappedBy = "profile")
-    private List<ProfileRoleEntity> profileList;
+    private List<ProfileRoleEntity> profileRoleList;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
