@@ -1,0 +1,49 @@
+package com.youtube.controller;
+
+import com.youtube.dto.AttachDTO;
+import com.youtube.service.AttachService;
+import com.youtube.util.PageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+@RestController
+@RequestMapping("/api/v1/article")
+public class AttachController {
+
+    @Autowired
+    private AttachService attachService;
+
+    @PostMapping("/upload")
+    public ResponseEntity<AttachDTO> create(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(attachService.upload(file));
+    }
+    @GetMapping("/open/{fileId}")
+    public ResponseEntity<Resource> open(@PathVariable String fileId) {
+        return attachService.open(fileId);
+    }
+
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> download(@PathVariable String fileId) {
+        return attachService.download(fileId);
+    }
+
+    @DeleteMapping("/{fileId}")
+    public ResponseEntity<Boolean> delete(@PathVariable String fileId) {
+        return ResponseEntity.ok(attachService.delete(fileId));
+    }
+
+
+    @GetMapping("")
+    public ResponseEntity<Page<AttachDTO>> getAll(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(attachService.pagination(PageUtil.page(page), size));
+    }
+
+
+
+}

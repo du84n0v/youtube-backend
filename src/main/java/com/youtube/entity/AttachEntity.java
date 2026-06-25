@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Setter
 public class AttachEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "origin_name")
