@@ -46,7 +46,7 @@ public class MailSenderService {
         runOut(toAccount);
         MailMessageDTO mailMessage = new MailMessageDTO();
         mailMessage.setToAccount(toAccount);
-        mailMessage.setSubject("Top News - Tasdiqlash kodi");
+        mailMessage.setSubject("YouTube - Tasdiqlash kodi");
         String code = generateCode();
 
         String body = "<div style=\"font-family: Arial; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #eee;\">" +

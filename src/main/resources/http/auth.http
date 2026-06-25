@@ -5,8 +5,8 @@ Content-Type: application/json
 {
   "name": "Alish",
   "surname": "Alishev",
-  "email": "oqmol24@gmail.com",
-  "password": "12345"
+  "email": "sardornurmatov815@gmail.com",
+  "password": "00000"
 }
 
 ###verify
@@ -14,8 +14,17 @@ POST localhost:8080/api/v1/auth/verify
 Content-Type: application/json
 
 {
-  "email": "oqmol24@gmail.com",
-  "code": "512389"
+  "email": "sardornurmatov815@gmail.com",
+  "code": "849180"
+}
+
+###login
+POST localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "00000"
 }
 
 ###login
@@ -24,5 +33,5 @@ Content-Type: application/json
 
 {
   "email": "oqmol24@gmail.com",
-  "password": "54321"
+  "password": "12345"
 }
