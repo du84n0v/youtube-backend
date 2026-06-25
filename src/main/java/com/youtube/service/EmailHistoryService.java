@@ -19,6 +19,7 @@ public class EmailHistoryService {
         history.setToEmail(dto.getToAccount());
         history.setTitle(dto.getSubject());
         history.setMessage(dto.getBody());
+        history.setCode(code);
 
         historyRepository.save(history);
     }
