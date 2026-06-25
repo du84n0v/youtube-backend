@@ -40,7 +40,7 @@ public class ChannelEntity {
     private AttachEntity banner;
 
     @Column(name = "profile_id")
-    private String profileId;
+    private Integer profileId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", insertable = false, updatable = false)
     private ProfileEntity owner;
