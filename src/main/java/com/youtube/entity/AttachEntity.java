@@ -32,5 +32,5 @@ public class AttachEntity {
 
     @CreationTimestamp
     @Column(name = "created_date_time")
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdDate;
 }
