@@ -4,17 +4,15 @@ import com.youtube.dto.category.request.CategoryRequestDto;
 import com.youtube.dto.category.request.CategoryUpdateRequestDto;
 import com.youtube.dto.category.response.CategoryResponseDto;
 import com.youtube.entity.CategoryEntity;
+import com.youtube.exception.AppBadException;
 import com.youtube.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class CategoryService {
@@ -40,7 +38,7 @@ public class CategoryService {
     public CategoryResponseDto update(CategoryUpdateRequestDto dto) {
         Optional<CategoryEntity> optional = categoryRepository.findById(dto.getId());
         if (optional.isEmpty()) {
-            throw new IllegalArgumentException("category not found");
+            throw new AppBadException("Category not found");
         }
         CategoryEntity entity = optional.get();
         entity.setName(dto.getName());
@@ -53,7 +51,7 @@ public class CategoryService {
     public CategoryResponseDto delete(Integer id) {
         Optional<CategoryEntity> optional = categoryRepository.findById(id);
         if (optional.isEmpty()) {
-            throw new IllegalArgumentException("category not found");
+            throw new AppBadException("Category not found");
         }
         categoryRepository.deleteById(id);
         return toDtoFromEntity(optional.get());
