@@ -1,6 +1,7 @@
 package com.youtube.repository;
 
 import com.youtube.entity.EmailHistoryEntity;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,4 +12,6 @@ public interface EmailHistoryRepository extends CrudRepository<EmailHistoryEntit
     @Query("SELECT COUNT(eh) FROM EmailHistoryEntity eh " +
             " WHERE eh.toEmail = ?1 AND eh.createdDate >= ?2 ")
     int countByToEmailAfter(String toAccount, LocalDateTime from);
+
+    EmailHistoryEntity findTopByToEmailOrderByCreatedDateDesc(String email);
 }
