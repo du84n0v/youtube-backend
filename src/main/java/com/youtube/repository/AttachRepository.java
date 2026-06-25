@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface AttachRepository extends CrudRepository<AttachEntity,String> {
 
 
-    @Query("from AttachEntity order by createdDateTime desc")
+    @Query("from AttachEntity order by createdDate desc")
     Page<AttachEntity> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
 
