@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name = "playlist_video")
 @Getter
 @Setter
 public class PlaylistVideoEntity {
