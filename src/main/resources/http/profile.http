@@ -1,0 +1,9 @@
+###change password
+POST localhost:8080/api/v1/profile/change/password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyMzk5ODg2LCJleHAiOjE3ODI0ODYyODZ9.zIpb4ND8Y0fVzwuwcMBGcc4YtpcSgT2SC7mxOIDDHFQwCQRvB4kT8HrpOK935MFs
+
+{
+  "oldPassword": "54321",
+  "newPassword": "12345"
+}
