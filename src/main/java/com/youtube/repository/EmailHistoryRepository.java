@@ -1,7 +1,6 @@
 package com.youtube.repository;
 
 import com.youtube.entity.EmailHistoryEntity;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
