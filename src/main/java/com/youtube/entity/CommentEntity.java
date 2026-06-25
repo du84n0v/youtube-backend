@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,5 +42,5 @@ public class CommentEntity {
 
     @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDate  createdDate;
+    private LocalDateTime  createdDate;
 }

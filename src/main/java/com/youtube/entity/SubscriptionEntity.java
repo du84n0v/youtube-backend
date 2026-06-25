@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "subscription")
@@ -33,11 +33,11 @@ public class SubscriptionEntity {
 
     @Column(name = "subscribe_date")
     @CreationTimestamp
-    private LocalDate subscribeDate;
+    private LocalDateTime subscribeDate;
 
     @Column(name = "unsubscribe_date")
     @UpdateTimestamp
-    private LocalDate unsubscribeDate;
+    private LocalDateTime unsubscribeDate;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "email_history")
@@ -27,5 +27,5 @@ public class EmailHistoryEntity {
 
     @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 }
