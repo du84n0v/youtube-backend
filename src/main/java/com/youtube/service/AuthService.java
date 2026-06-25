@@ -19,6 +19,8 @@ public class AuthService {
     private ProfileRepository profileRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MailSenderService mailSenderService;
 
     public String register(RegisterDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
@@ -39,6 +41,8 @@ public class AuthService {
         profile.setStatus(ProfileStatusEnum.IN_REGISTRATION);
 
         profileRepository.save(profile);
+
+        mailSenderService.verificationCode(profile.getEmail());
 
         return "Code sent to your email. Please check email";
     }
