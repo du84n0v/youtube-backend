@@ -29,9 +29,9 @@ public class CommentLikeEntity {
     @JoinColumn(name = "comment_id", insertable = false, updatable = false)
     private CommentEntity comment;
 
-    @Column(name = "created_date_time")
+    @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdDate;
 
     @Column(name = "emotion")
     @Enumerated(EnumType.STRING)

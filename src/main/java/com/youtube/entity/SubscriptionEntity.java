@@ -31,13 +31,13 @@ public class SubscriptionEntity {
     @JoinColumn(name = "channel_id", updatable = false, insertable = false)
     private ChannelEntity channel;
 
-    @Column(name = "subscribe_date_time")
+    @Column(name = "subscribe_date")
     @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    private LocalDateTime subscribeDate;
 
-    @Column(name = "unscribe_date_time")
+    @Column(name = "unsubscribe_date")
     @UpdateTimestamp
-    private LocalDateTime updatedDateTime;
+    private LocalDateTime unsubscribeDate;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

@@ -28,7 +28,7 @@ public class VideoTagEntity {
     @JoinColumn(name = "tag_id", insertable = false, updatable = false)
     private TagEntity tag;
 
-    @Column(name = "created_date_time")
+    @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    private LocalDateTime  createdDate;
 }

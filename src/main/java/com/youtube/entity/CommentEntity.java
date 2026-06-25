@@ -40,7 +40,7 @@ public class CommentEntity {
     @Column(name = "dislike_count")
     private Long dislikeCount;
 
-    @Column(name = "created_date_time")
+    @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    private LocalDateTime  createdDate;
 }

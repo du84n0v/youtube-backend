@@ -40,12 +40,12 @@ public class VideoEntity {
     private AttachEntity attach;
 
     @CreationTimestamp
-    @Column(name = "created_date_time")
-    private LocalDateTime createdDateTime;
+    @Column(name = "created_date")
+    private LocalDateTime  createdDate;
 
     @CreationTimestamp
-    @Column(name = "published_date_time")
-    private LocalDateTime publishedDateTime;
+    @Column(name = "published_date")
+    private LocalDateTime  publishedDate;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -67,7 +67,7 @@ public class VideoEntity {
     @Column(name = "channel_id")
     private String channelId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "channel_id")
+    @JoinColumn(name = "channel_id", insertable = false, updatable = false)
     private ChannelEntity channel;
 
     @Column(name = "like_count")
