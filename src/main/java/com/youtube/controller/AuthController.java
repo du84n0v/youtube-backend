@@ -1,7 +1,9 @@
 package com.youtube.controller;
 
+import com.youtube.dto.auth.LoginDTO;
 import com.youtube.dto.auth.RegisterDTO;
 import com.youtube.dto.auth.VerificationDTO;
+import com.youtube.dto.profile.ProfileResponseDTO;
 import com.youtube.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,4 +29,10 @@ public class AuthController {
     public ResponseEntity<String> verify(@Valid @RequestBody VerificationDTO dto){
         return ResponseEntity.ok(authService.verify(dto));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ProfileResponseDTO> login(@Valid @RequestBody LoginDTO login){
+        return ResponseEntity.ok(authService.login(login));
+    }
+
 }

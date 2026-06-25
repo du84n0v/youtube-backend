@@ -1,7 +1,11 @@
 package com.youtube.service;
 
+import com.youtube.config.security.CustomUserDetails;
+import com.youtube.dto.auth.LoginDTO;
 import com.youtube.dto.auth.RegisterDTO;
 import com.youtube.dto.auth.VerificationDTO;
+import com.youtube.dto.profile.ProfileResponseDTO;
+import com.youtube.dto.security.JwtDTO;
 import com.youtube.entity.EmailHistoryEntity;
 import com.youtube.entity.ProfileEntity;
 import com.youtube.entity.VerificationAttemptEntity;
@@ -12,8 +16,14 @@ import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.EmailHistoryRepository;
 import com.youtube.repository.ProfileRepository;
 import com.youtube.repository.VerificationAttemptRepository;
+import com.youtube.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +43,8 @@ public class AuthService {
     private VerificationAttemptRepository attemptRepository;
     @Autowired
     private EmailHistoryRepository emailHistoryRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public String register(RegisterDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
@@ -111,5 +123,37 @@ public class AuthService {
         attemptRepository.delete(attempt);
 
         return "Successfully activated. You can login by now";
+    }
+
+    public ProfileResponseDTO login(LoginDTO login) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword())
+            );
+
+            if (authentication.isAuthenticated()) {
+
+                if (authentication.getPrincipal() instanceof CustomUserDetails user) {
+                    String jwt = JwtUtil.encode(new JwtDTO(
+                            user.getId(),
+                            user.getEmail(),
+                            user.getRole().name()
+                    ));
+
+                    ProfileResponseDTO response = new ProfileResponseDTO();
+                    response.setName(user.getName());
+                    response.setSurname(user.getSurname());
+                    response.setUsername(user.getUsername());
+                    response.setRole(user.getRole());
+                    response.setJwt(jwt);
+                    return response;
+                }
+            }
+        } catch (BadCredentialsException e) {
+            throw new AppBadException("Username or password wrong");
+        } catch (DisabledException e) {
+            throw new AppBadException("This user is not active");
+        }
+        throw new AppBadException("Username or password wrong");
     }
 }

@@ -1,4 +1,4 @@
-package com.youtube.dto.auth;
+package com.youtube.dto.profile;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youtube.enums.ProfileRoleEnum;
