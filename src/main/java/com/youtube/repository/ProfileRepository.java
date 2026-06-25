@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer> {
 
     Optional<ProfileEntity> findByEmailAndStatus(String username, ProfileStatusEnum profileStatusEnum);
+
+    Optional<ProfileEntity> findByEmail(String email);
 }
