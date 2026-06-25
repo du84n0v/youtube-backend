@@ -25,6 +25,9 @@ public class EmailHistoryEntity {
     @Column(name = "message", columnDefinition = "TEXT")
     private String message;
 
+    @Column(name = "code")
+    private String code;
+
     @Column(name = "created_date")
     @CreationTimestamp
     private LocalDateTime createdDate;
