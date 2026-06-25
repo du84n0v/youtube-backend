@@ -35,7 +35,7 @@ public class SpringConfig {
     };
 
     @Bean
-    public AuthenticationProvider authenticationProvider(MD5PasswordEncoder passwordEncoder){
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder){
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
 
