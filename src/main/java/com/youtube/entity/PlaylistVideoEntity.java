@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table
@@ -28,9 +28,9 @@ public class PlaylistVideoEntity {
     @JoinColumn(name = "video_id", insertable = false, updatable = false)
     private VideoEntity video;
 
-    @Column(name = "created_date_time")
+    @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    private LocalDate  createdDate;
 
     @Column(name = "order_num")
     private String orderNumber;

@@ -4,6 +4,9 @@ import com.youtube.enums.PlaylistStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "playlist")
@@ -32,4 +35,8 @@ public class PlaylistEntity {
 
     @Column(name = "order_num")
     private Integer orderNumber;
+
+    @Column(name = "created_date")
+    @CreationTimestamp
+    private LocalDate createdDate;
 }

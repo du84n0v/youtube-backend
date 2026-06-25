@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "video_like")
@@ -29,9 +29,9 @@ public class VideoLikeEntity {
     @JoinColumn(name = "video_id", insertable = false, updatable = false)
     private VideoEntity video;
 
-    @Column(name = "created_date_time")
+    @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    private LocalDate  createdDate;
 
     @Column(name = "emotion")
     @Enumerated(EnumType.STRING)

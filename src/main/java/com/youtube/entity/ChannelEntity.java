@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "channel")
@@ -46,6 +46,6 @@ public class ChannelEntity {
     private ProfileEntity owner;
 
     @CreationTimestamp
-    @Column(name = "created_date_time")
-    private LocalDateTime createdDateTime;
+    @Column(name = "created_date")
+    private LocalDate createdDate;
 }

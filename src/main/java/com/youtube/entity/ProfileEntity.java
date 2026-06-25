@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -44,6 +44,6 @@ public class ProfileEntity {
     private ProfileStatusEnum status;
 
     @CreationTimestamp
-    @Column(name = "created_date_time")
-    private LocalDateTime createdDateTime;
+    @Column(name = "created_date")
+    private LocalDate  createdDate;
 }
