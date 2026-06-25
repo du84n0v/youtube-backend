@@ -17,7 +17,7 @@ public class VideoWatchedEntity {
     private String id;
 
     @Column(name = "profile_id")
-    private String profileId;
+    private Integer profileId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id", insertable = false, updatable = false)
     private ProfileEntity profile;

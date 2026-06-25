@@ -17,7 +17,7 @@ public class PlaylistVideoEntity {
     private Integer id;
 
     @Column(name = "playlist_id")
-    private String profileId;
+    private Integer playlistId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_id",  insertable = false, updatable = false)
     private PlaylistEntity playlist;
