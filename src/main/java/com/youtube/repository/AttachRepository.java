@@ -7,11 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface AttachRepository extends CrudRepository<AttachEntity,String> {
 
 
-    @Query("from AttachEntity order by createdDateTime desc")
+    @Query("from AttachEntity order by createdDate desc")
     Page<AttachEntity> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
 
