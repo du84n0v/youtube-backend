@@ -1,5 +1,6 @@
 package com.youtube.entity;
 
+import com.youtube.enums.ProfileRoleEnum;
 import com.youtube.enums.ProfileStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,8 +37,9 @@ public class ProfileEntity {
     @JoinColumn(name = "photo_id", insertable = false, updatable = false)
     private AttachEntity photo;
 
-    @OneToMany(mappedBy = "profile")
-    private List<ProfileRoleEntity> profileRoleList;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private ProfileRoleEnum role;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
