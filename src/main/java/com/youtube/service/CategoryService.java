@@ -38,7 +38,7 @@ public class CategoryService {
     public CategoryResponseDto update(CategoryUpdateRequestDto dto) {
         Optional<CategoryEntity> optional = categoryRepository.findById(dto.getId());
         if (optional.isEmpty()) {
-            throw new AppBadException("category not found");
+            throw new AppBadException("Category not found");
         }
         CategoryEntity entity = optional.get();
         entity.setName(dto.getName());
@@ -51,7 +51,7 @@ public class CategoryService {
     public CategoryResponseDto delete(Integer id) {
         Optional<CategoryEntity> optional = categoryRepository.findById(id);
         if (optional.isEmpty()) {
-            throw new AppBadException("category not found");
+            throw new AppBadException("Category not found");
         }
         categoryRepository.deleteById(id);
         return toDtoFromEntity(optional.get());
