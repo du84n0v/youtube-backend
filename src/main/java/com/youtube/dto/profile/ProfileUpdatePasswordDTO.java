@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProfileChangePasswordDTO {
+public class ProfileUpdatePasswordDTO {
     private String oldPassword;
     @NotBlank(message = "Password should not be empty!")
     @Size(min = 5, max = 30, message = "Password size should be min 5 and max 30 length!")
