@@ -44,4 +44,11 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.getProfile(profileId));
     }
 
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create-profile")
+    public ResponseEntity<String> create(@Valid @RequestBody ProfileDTO dto){
+        return ResponseEntity.ok(profileService.create(dto));
+    }
+
+
 }

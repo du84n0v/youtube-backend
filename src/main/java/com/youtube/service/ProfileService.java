@@ -6,6 +6,7 @@ import com.youtube.entity.EmailHistoryEntity;
 import com.youtube.entity.ProfileEntity;
 import com.youtube.entity.VerificationAttemptEntity;
 import com.youtube.enums.EmailCodeTypeEnum;
+import com.youtube.enums.ProfileStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.EmailHistoryRepository;
@@ -37,11 +38,11 @@ public class ProfileService {
 
     public String updatePassword(ProfilePasswordUpdateDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findById(SpringSecurityUtil.getCurrentProfileId());
-        if(optional.isEmpty()){
+        if (optional.isEmpty()) {
             throw new ItemNotFoundException("User not found");
         }
         ProfileEntity profile = optional.get();
-        if(!passwordEncoder.matches(dto.getOldPassword(), profile.getPassword())){
+        if (!passwordEncoder.matches(dto.getOldPassword(), profile.getPassword())) {
             throw new AppBadException("Current Password is wrong!");
         }
         profile.setPassword(passwordEncoder.encode(dto.getNewPassword()));
@@ -52,11 +53,10 @@ public class ProfileService {
 
     public String updateEmail(ProfileEmailUpdateDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
-        if(optional.isPresent()){
-            if(!optional.get().getId().equals(SpringSecurityUtil.getCurrentProfileId())){
+        if (optional.isPresent()) {
+            if (!optional.get().getId().equals(SpringSecurityUtil.getCurrentProfileId())) {
                 throw new AppBadException("This email is taken by other user");
-            }
-            else{
+            } else {
                 throw new AppBadException("This is your current email");
             }
         }
@@ -117,7 +117,7 @@ public class ProfileService {
 
     public String updateDetail(ProfileDetailUpdateDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findById(SpringSecurityUtil.getCurrentProfileId());
-        if(optional.isEmpty()){
+        if (optional.isEmpty()) {
             throw new ItemNotFoundException("User not found");
         }
         ProfileEntity profile = optional.get();
@@ -135,18 +135,18 @@ public class ProfileService {
                 .orElseThrow(() -> new ItemNotFoundException("Profile not found"));
 
         String oldAttachId = profile.getPhotoId();
-        if(dto.getAttachId().equals(oldAttachId)){
+        if (dto.getAttachId().equals(oldAttachId)) {
             throw new AppBadException("Photo is already in profile");
         }
 
         AttachEntity attach = attachService.findById(dto.getAttachId());
-        if(attach == null){
+        if (attach == null) {
             throw new ItemNotFoundException("Attach not found");
         }
         profile.setPhotoId(dto.getAttachId());
         profileRepository.save(profile);
 
-        if(oldAttachId != null){
+        if (oldAttachId != null) {
             attachService.delete(oldAttachId);
         }
 
@@ -163,10 +163,28 @@ public class ProfileService {
         response.setName(profile.getName());
         response.setSurname(profile.getSurname());
         response.setEmail(profile.getEmail());
-        if(profile.getPhotoId() != null){
+        if (profile.getPhotoId() != null) {
             response.setMainPhoto(attachService.openDTO(profile.getPhotoId()));
         }
 
         return response;
+    }
+
+    public String create(ProfileDTO dto) {
+        Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
+        if(optional.isPresent()){
+            throw new AppBadException("Email already exists");
+        }
+        ProfileEntity profile = new ProfileEntity();
+        profile.setName(dto.getName());
+        profile.setSurname(dto.getSurname());
+        profile.setEmail(dto.getEmail());
+        profile.setPassword(passwordEncoder.encode(dto.getPassword()));
+        profile.setRole(dto.getRole());
+        profile.setStatus(ProfileStatusEnum.ACTIVE);
+
+        profileRepository.save(profile);
+
+        return "Successfully created";
     }
 }
