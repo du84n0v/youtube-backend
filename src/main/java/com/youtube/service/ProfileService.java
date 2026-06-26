@@ -1,9 +1,7 @@
 package com.youtube.service;
 
-import com.youtube.dto.profile.ProfileEmailVerificationDTO;
-import com.youtube.dto.profile.ProfileUpdateDetailDTO;
-import com.youtube.dto.profile.ProfileUpdateEmailDTO;
-import com.youtube.dto.profile.ProfileUpdatePasswordDTO;
+import com.youtube.dto.profile.*;
+import com.youtube.entity.AttachEntity;
 import com.youtube.entity.EmailHistoryEntity;
 import com.youtube.entity.ProfileEntity;
 import com.youtube.entity.VerificationAttemptEntity;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -35,8 +32,10 @@ public class ProfileService {
     private EmailHistoryRepository emailHistoryRepository;
     @Autowired
     private VerificationAttemptService attemptService;
+    @Autowired
+    private AttachService attachService;
 
-    public String updatePassword(ProfileUpdatePasswordDTO dto) {
+    public String updatePassword(ProfilePasswordUpdateDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findById(SpringSecurityUtil.getCurrentProfileId());
         if(optional.isEmpty()){
             throw new ItemNotFoundException("User not found");
@@ -51,7 +50,7 @@ public class ProfileService {
         return "Successfully changed";
     }
 
-    public String updateEmail(ProfileUpdateEmailDTO dto) {
+    public String updateEmail(ProfileEmailUpdateDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
         if(optional.isPresent()){
             if(!optional.get().getId().equals(SpringSecurityUtil.getCurrentProfileId())){
@@ -116,7 +115,7 @@ public class ProfileService {
         return "Successfully changed";
     }
 
-    public String updateDetail(ProfileUpdateDetailDTO dto) {
+    public String updateDetail(ProfileDetailUpdateDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findById(SpringSecurityUtil.getCurrentProfileId());
         if(optional.isEmpty()){
             throw new ItemNotFoundException("User not found");
@@ -128,5 +127,30 @@ public class ProfileService {
         profileRepository.save(profile);
 
         return "Successfully updated";
+    }
+
+    @Transactional
+    public String updatePhoto(ProfilePhotoUpdateDTO dto) {
+        ProfileEntity profile = profileRepository.findById(SpringSecurityUtil.getCurrentProfileId())
+                .orElseThrow(() -> new ItemNotFoundException("Profile not found"));
+
+        String oldAttachId = profile.getPhotoId();
+        if(dto.getAttachId().equals(oldAttachId)){
+            throw new AppBadException("Photo is already in profile");
+        }
+
+        AttachEntity attach = attachService.findById(dto.getAttachId());
+        if(attach == null){
+            throw new ItemNotFoundException("Attach not found");
+        }
+        profile.setPhotoId(dto.getAttachId());
+        profileRepository.save(profile);
+
+        if(oldAttachId != null){
+            attachService.delete(oldAttachId);
+        }
+
+        return "Successfully changed";
+
     }
 }

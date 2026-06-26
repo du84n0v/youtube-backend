@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProfileUpdateEmailDTO {
+public class ProfileEmailUpdateDTO {
     @Email(message = "Email should be formatted!")
     @NotBlank(message = "Email should not be empty")
     private String email;

@@ -6,9 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProfileUpdateDetailDTO {
-    @NotBlank
-    private String name;
-    @NotBlank
-    private String surname;
+public class ProfilePhotoUpdateDTO {
+    @NotBlank(message = "Attach ID bo'sh bo'lishi mumkin emas")
+    private String attachId;
 }
