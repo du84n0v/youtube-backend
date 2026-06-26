@@ -1,0 +1,8 @@
+###add category
+POST localhost:8080/api/v1/category/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyNDAxMzQ3LCJleHAiOjE3ODI0ODc3NDd9.jKy_9rQ0vhRaFavtJKkWaG7womvP67CcyZViLkUFvmxcWHJX4fm14aTOQViHXIJH
+
+{
+  "name": "Technology"
+}

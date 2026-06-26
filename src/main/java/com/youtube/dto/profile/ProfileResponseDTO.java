@@ -27,7 +27,5 @@ public class ProfileResponseDTO {
 
     private LocalDateTime createdDate;
 
-//    private AttachShortInfoDTO content;
-
     private String jwt;
 }

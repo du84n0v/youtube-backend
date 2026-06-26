@@ -13,6 +13,8 @@ public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer
 
     Optional<ProfileEntity> findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     @Query("from ProfileEntity where id=:id and status='ACTIVE'")
     Optional<ProfileEntity> findByIdAndStatusIsActive(Integer id);
 }

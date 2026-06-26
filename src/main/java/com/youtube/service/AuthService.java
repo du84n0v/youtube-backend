@@ -9,6 +9,7 @@ import com.youtube.dto.security.JwtDTO;
 import com.youtube.entity.EmailHistoryEntity;
 import com.youtube.entity.ProfileEntity;
 import com.youtube.entity.VerificationAttemptEntity;
+import com.youtube.enums.EmailCodeTypeEnum;
 import com.youtube.enums.ProfileRoleEnum;
 import com.youtube.enums.ProfileStatusEnum;
 import com.youtube.exception.AppBadException;
@@ -66,7 +67,7 @@ public class AuthService {
 
         profileRepository.save(profile);
 
-        mailSenderService.verificationCode(profile.getEmail());
+        mailSenderService.verificationCode(profile.getEmail(), EmailCodeTypeEnum.REGISTRATION);
 
         VerificationAttemptEntity attempt = new VerificationAttemptEntity();
         attempt.setEmail(dto.getEmail());
