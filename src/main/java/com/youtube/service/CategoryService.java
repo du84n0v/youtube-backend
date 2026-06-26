@@ -48,13 +48,13 @@ public class CategoryService {
     }
 
 
-    public CategoryResponseDto delete(Integer id) {
+    public Boolean delete(Integer id) {
         Optional<CategoryEntity> optional = categoryRepository.findById(id);
         if (optional.isEmpty()) {
             throw new AppBadException("Category not found");
         }
         categoryRepository.deleteById(id);
-        return toDtoFromEntity(optional.get());
+        return Boolean.TRUE;
     }
 
     public List<CategoryResponseDto> getAll() {

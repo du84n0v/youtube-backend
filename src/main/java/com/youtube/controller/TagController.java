@@ -30,7 +30,7 @@ public class TagController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<TagResponseDto> delete(@PathVariable Integer id) {
+    public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(tagService.delete(id));
     }
 

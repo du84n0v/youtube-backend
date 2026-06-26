@@ -49,4 +49,7 @@ public class ChannelEntity {
     @CreationTimestamp
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Column(name = "visible")
+    private Boolean visible = Boolean.TRUE;
 }

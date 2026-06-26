@@ -49,13 +49,12 @@ public class TagService {
         return toDtoFromEntity(entity);
     }
 
-    public TagResponseDto delete(Integer id) {
+    public Boolean delete(Integer id) {
         Optional<TagEntity> optional = tagRepository.findById(id);
         if (optional.isEmpty()){
             throw new AppBadException("Tag not found");
         }
-        tagRepository.deleteById(id);
-        return toDtoFromEntity(optional.get());
+        return Boolean.TRUE;
     }
 
     public List<TagResponseDto> getAll() {

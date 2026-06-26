@@ -31,7 +31,7 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<CategoryResponseDto> delete(@PathVariable Integer id) {
+    public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(categoryService.delete(id));
     }
 
