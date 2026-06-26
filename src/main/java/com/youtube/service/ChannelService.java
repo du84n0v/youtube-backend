@@ -43,6 +43,7 @@ public class ChannelService {
     private AttachRepository attachRepository;
 
 
+
     public ChannelDTO create(ChannelDTO channelDTO) {
         ChannelEntity channelEntity = getChannelByName(channelDTO.getName());
         if (channelEntity != null) {
@@ -56,7 +57,7 @@ public class ChannelService {
         ChannelEntity channel = new ChannelEntity();
         channel.setName(channelDTO.getName());
         channel.setOwner(profile);
-        channel.setProfileId((profile.getId()).toString());
+        channel.setProfileId(profile.getId());
         channel.setDescription(channelDTO.getDescription());
         channel.setPhotoId(channelDTO.getPhotoId());
         channel.setPhoto(photo);

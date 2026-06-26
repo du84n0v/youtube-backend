@@ -33,18 +33,17 @@ public class ChannelEntity {
     @Enumerated(EnumType.STRING)
     private GeneralStatusEnum status;
 
-    @Column(name = "profile_id")
-    private Integer profileId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
-    private ProfileEntity owner;
-
     @Column(name = "banner_id")
     private String bannerId;
     @OneToOne
     @JoinColumn(name = "banner_id", insertable = false, updatable = false)
     private AttachEntity banner;
 
+    @Column(name = "profile_id")
+    private Integer profileId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
+    private ProfileEntity owner;
 
     @CreationTimestamp
     @Column(name = "created_date")
