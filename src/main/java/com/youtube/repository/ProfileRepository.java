@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer> {
 
     Optional<ProfileEntity> findByEmailAndStatus(String username, ProfileStatusEnum profileStatusEnum);
-    @Query("from ProfileEntity where status='ACTIVE'")
-    Optional<ProfileEntity> findByIdAndStatusIsActive(Integer id);
 
+    Optional<ProfileEntity> findByEmail(String email);
 }

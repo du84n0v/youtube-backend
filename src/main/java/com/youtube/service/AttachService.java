@@ -1,6 +1,7 @@
 package com.youtube.service;
 
 import com.youtube.dto.AttachDTO;
+import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.entity.AttachEntity;
 import com.youtube.exception.AppBadException;
 import com.youtube.repository.AttachRepository;
@@ -139,7 +140,10 @@ public class AttachService {
         entityList.forEach(e -> dtos.add(toDTO(e)));
         return new PageImpl<>(dtos, pageable, totalElement);
     }
+    public AttachShortInfoDTO openDTO(String id) {
 
+        return new AttachShortInfoDTO(id, attachUrl + "/attach/open/" + id);
+    }
 
     private String getYmDString() {
         int year = Calendar.getInstance().get(Calendar.YEAR);

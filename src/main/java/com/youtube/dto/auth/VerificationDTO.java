@@ -10,6 +10,6 @@ import lombok.Setter;
 public class VerificationDTO {
     @NotBlank
     private String email;
-    @Size(min = 5, max = 6)
+    @Size(min = 6, max = 6)
     private String code;
 }
