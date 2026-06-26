@@ -43,7 +43,7 @@ public class PlaylistController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/list-by-user-id/{id}")
+    @GetMapping("/user/{id}/playlists")
     public ResponseEntity<List<PlaylistResponseDto>> listByUserId(@PathVariable Integer id){
         return ResponseEntity.ok(playlistService.getListByUserId(id));
     }
@@ -51,10 +51,14 @@ public class PlaylistController {
     //7. Get User Playlist (order by order number desc) (murojat qilgan user ni)
     //        PlayListShortInfo
 
-    @GetMapping("/user-joined-list")
+    @GetMapping("/pagination/user-joined/")
     public ResponseEntity<PageImpl<PlaylistShortInfoDto>> userJoinedPag(@RequestParam(value = "page", defaultValue = "1") int page,
                                                                @RequestParam(value = "size", defaultValue = "10") int size){
         return ResponseEntity.ok(playlistService.getUserJoinedPag(PageUtil.page(page), size));
     }
 
+    @GetMapping("/channel/{channelKey}/playlists")
+    public ResponseEntity<List<PlaylistShortInfoDto>>  listByChannel(@PathVariable String channelKey){
+        return ResponseEntity.ok(playlistService.listByChannelKey(channelKey));
+    }
 }

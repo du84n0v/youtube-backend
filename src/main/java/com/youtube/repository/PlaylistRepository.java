@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlaylistRepository extends CrudRepository<PlaylistEntity, Integer>, PagingAndSortingRepository<PlaylistEntity, Integer> {
-    @Query("from PlaylistEntity where channel.owner.id =:id order by orderNumber desc")
+    @Query("FROM PlaylistEntity WHERE channel.owner.id =:id ORDER BY orderNumber DESC ")
     Optional<List<PlaylistEntity>> findByUserId(Integer id);
+
+    @Query("FROM PlaylistEntity WHERE channel.id =:channelKey ORDER BY orderNumber DESC ")
+    Optional<List<PlaylistEntity>> findAllByChannelKey(String channelKey);
 }

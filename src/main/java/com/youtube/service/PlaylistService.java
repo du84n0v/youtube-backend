@@ -138,4 +138,17 @@ public class PlaylistService {
         response.setChannel(channel);
         return response;
     }
+
+    public List<PlaylistShortInfoDto> listByChannelKey(String channelKey) {
+        Optional<List<PlaylistEntity>> optional = playlistRepository.findAllByChannelKey(channelKey);
+        if (optional.isEmpty()){
+            throw new AppBadException("Playlist not found");
+        }
+        List<PlaylistShortInfoDto> response = new LinkedList<>();
+        List<PlaylistEntity> entities = optional.get();
+        entities.forEach(entity -> {
+            response.add(toUserJoinedShortInfo(entity));
+        });
+        return  response;
+    }
 }
