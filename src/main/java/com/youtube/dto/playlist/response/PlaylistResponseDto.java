@@ -1,7 +1,6 @@
 package com.youtube.dto.playlist.response;
 
 import com.youtube.enums.PlaylistStatusEnum;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 

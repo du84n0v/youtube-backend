@@ -3,6 +3,7 @@ package com.youtube.controller;
 import com.youtube.dto.playlist.request.PlaylistRequestDto;
 import com.youtube.dto.playlist.request.PlaylistUpdateRequestDto;
 import com.youtube.dto.playlist.response.PlaylistResponseDto;
+import com.youtube.dto.playlist.response.PlaylistShortInfoDto;
 import com.youtube.service.PlaylistService;
 import com.youtube.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/playlist")
@@ -39,6 +42,19 @@ public class PlaylistController {
         return ResponseEntity.ok(playlistService.pagination(PageUtil.page(page), size));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/list-by-user-id/{id}")
+    public ResponseEntity<List<PlaylistResponseDto>> listByUserId(@PathVariable Integer id){
+        return ResponseEntity.ok(playlistService.getListByUserId(id));
+    }
 
+    //7. Get User Playlist (order by order number desc) (murojat qilgan user ni)
+    //        PlayListShortInfo
+
+    @GetMapping("/user-joined-list")
+    public ResponseEntity<PageImpl<PlaylistShortInfoDto>> userJoinedPag(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                               @RequestParam(value = "size", defaultValue = "10") int size){
+        return ResponseEntity.ok(playlistService.getUserJoinedPag(PageUtil.page(page), size));
+    }
 
 }
