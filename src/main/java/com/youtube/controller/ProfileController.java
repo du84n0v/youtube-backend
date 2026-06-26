@@ -1,6 +1,7 @@
 package com.youtube.controller;
 
 import com.youtube.dto.profile.ProfileEmailVerificationDTO;
+import com.youtube.dto.profile.ProfileUpdateDetailDTO;
 import com.youtube.dto.profile.ProfileUpdateEmailDTO;
 import com.youtube.dto.profile.ProfileUpdatePasswordDTO;
 import com.youtube.service.ProfileService;
@@ -25,9 +26,15 @@ public class ProfileController {
     public ResponseEntity<String> updateEmail(@Valid @RequestBody ProfileUpdateEmailDTO dto){
         return ResponseEntity.ok(profileService.updateEmail(dto));
     }
+
     @PutMapping("/update/email-verify")
     public ResponseEntity<String> verifyAndUpdateEmail(@RequestBody ProfileEmailVerificationDTO dto){
         return ResponseEntity.ok(profileService.verifyAndUpdateEmail(dto));
+    }
+
+    @PutMapping("/update/detail")
+    public ResponseEntity<String> updateDetail(@Valid @RequestBody ProfileUpdateDetailDTO dto){
+        return ResponseEntity.ok(profileService.updateDetail(dto));
     }
 
 }

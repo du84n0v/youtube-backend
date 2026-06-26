@@ -1,6 +1,7 @@
 package com.youtube.service;
 
 import com.youtube.dto.profile.ProfileEmailVerificationDTO;
+import com.youtube.dto.profile.ProfileUpdateDetailDTO;
 import com.youtube.dto.profile.ProfileUpdateEmailDTO;
 import com.youtube.dto.profile.ProfileUpdatePasswordDTO;
 import com.youtube.entity.EmailHistoryEntity;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -114,4 +116,17 @@ public class ProfileService {
         return "Successfully changed";
     }
 
+    public String updateDetail(ProfileUpdateDetailDTO dto) {
+        Optional<ProfileEntity> optional = profileRepository.findById(SpringSecurityUtil.getCurrentProfileId());
+        if(optional.isEmpty()){
+            throw new ItemNotFoundException("User not found");
+        }
+        ProfileEntity profile = optional.get();
+        profile.setName(dto.getName());
+        profile.setSurname(dto.getSurname());
+
+        profileRepository.save(profile);
+
+        return "Successfully updated";
+    }
 }
