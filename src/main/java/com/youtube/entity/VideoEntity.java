@@ -1,5 +1,6 @@
 package com.youtube.entity;
 
+
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.enums.VideoTypeEnum;
 import jakarta.persistence.*;
