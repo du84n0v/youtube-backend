@@ -39,4 +39,9 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.updatePhoto(dto));
     }
 
+    @GetMapping("/profile-detail/{profileId}")
+    public ResponseEntity<ProfileDetailDTO> getProfile(@PathVariable Integer profileId){
+        return ResponseEntity.ok(profileService.getProfile(profileId));
+    }
+
 }

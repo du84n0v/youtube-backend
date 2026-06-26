@@ -153,4 +153,20 @@ public class ProfileService {
         return "Successfully changed";
 
     }
+
+    public ProfileDetailDTO getProfile(Integer profileId) {
+        ProfileEntity profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new ItemNotFoundException("User not found"));
+
+        ProfileDetailDTO response = new ProfileDetailDTO();
+        response.setId(profileId);
+        response.setName(profile.getName());
+        response.setSurname(profile.getSurname());
+        response.setEmail(profile.getEmail());
+        if(profile.getPhotoId() != null){
+            response.setMainPhoto(attachService.openDTO(profile.getPhotoId()));
+        }
+
+        return response;
+    }
 }
