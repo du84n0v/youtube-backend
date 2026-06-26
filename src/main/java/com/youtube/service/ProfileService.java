@@ -7,17 +7,13 @@ import com.youtube.entity.EmailHistoryEntity;
 import com.youtube.entity.ProfileEntity;
 import com.youtube.entity.VerificationAttemptEntity;
 import com.youtube.enums.EmailCodeTypeEnum;
-import com.youtube.enums.ProfileStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.EmailHistoryRepository;
 import com.youtube.repository.ProfileRepository;
-import com.youtube.repository.VerificationAttemptRepository;
 import com.youtube.util.SpringSecurityUtil;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
