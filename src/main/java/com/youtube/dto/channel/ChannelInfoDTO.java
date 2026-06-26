@@ -13,14 +13,14 @@ public class ChannelInfoDTO {
     String id;
     String name;
     String description;
-    String profileId;
+    Integer profileId;
     String bannerId;
     String photoId;
     LocalDateTime createdDate;
     GeneralStatusEnum status;
 
 
-    public ChannelInfoDTO(String id, String name, String description, String profileId, String bannerId, String photoId, LocalDateTime createdDate) {
+    public ChannelInfoDTO(String id, String name, String description, Integer profileId, String bannerId, String photoId, LocalDateTime createdDate) {
         this.id=id;
         this.name=name;
         this.description=description;
@@ -30,7 +30,7 @@ public class ChannelInfoDTO {
         this.createdDate=createdDate;
 
     }
-    public ChannelInfoDTO(String id, String name, String description, String profileId, String bannerId, String photoId, LocalDateTime createdDate,GeneralStatusEnum status) {
+    public ChannelInfoDTO(String id, String name, String description, Integer profileId, String bannerId, String photoId, LocalDateTime createdDate,GeneralStatusEnum status) {
         this.id=id;
         this.name=name;
         this.description=description;
