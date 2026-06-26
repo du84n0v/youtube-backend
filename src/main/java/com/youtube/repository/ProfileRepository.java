@@ -12,4 +12,7 @@ public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer
     Optional<ProfileEntity> findByEmailAndStatus(String username, ProfileStatusEnum profileStatusEnum);
 
     Optional<ProfileEntity> findByEmail(String email);
+
+    @Query("from ProfileEntity where id=:id and status='ACTIVE'")
+    Optional<ProfileEntity> findByIdAndStatusIsActive(Integer id);
 }
