@@ -5,6 +5,7 @@ import com.youtube.service.ProfileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,7 +45,7 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.getProfile(profileId));
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-profile")
     public ResponseEntity<String> create(@Valid @RequestBody ProfileDTO dto){
         return ResponseEntity.ok(profileService.create(dto));
