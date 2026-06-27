@@ -1,0 +1,16 @@
+###create
+POST localhost:8080/api/v1/video/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+{
+  "title": "for test",
+  "description": "for test",
+  "type": "SHORT",
+  "status": "PRIVATE",
+  "categoryId": 1,
+  "channelId": "1",
+  "attachId": "132342-asdfs345dfsg546.mp4",
+  "previewAttachId": "132342-354laksdgf34562.jpg"
+
+}

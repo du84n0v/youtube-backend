@@ -1,0 +1,19 @@
+###create attach
+POST localhost:8080/api/v1/
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="preview.jpg"
+
+< C:/Users/user/OneDrive/Ishchi stol/kitob.jpg
+
+###create attach
+POST localhost:8080/api/v1/video/create
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="content.jpg"
+
+< C:/Users/user/OneDrive/Ishchi stol/messi.mp4

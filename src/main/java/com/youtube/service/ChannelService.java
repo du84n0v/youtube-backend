@@ -22,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,6 +68,7 @@ public class ChannelService {
         return channelDTO;
 
     }
+
     public ChannelUpdateDTO update(ChannelUpdateDTO channelUpdateDTO) {
         ProfileEntity profile = getProfileById(SpringSecurityUtil.getCurrentProfileId());
         AttachEntity photo = getAttachById(channelUpdateDTO.getPhotoId());
@@ -98,6 +98,7 @@ public class ChannelService {
         return channelUpdateDTO;
 
     }
+
     public Page<ChannelInfoDTO> pagination(int page, int size) {
         Pageable pageable = PageRequest.of(PageUtil.page(page), size);
         Page<ChannelEntity> entities = channelRepository.pagination(pageable);
@@ -109,6 +110,7 @@ public class ChannelService {
         entityList.forEach(e -> dtos.add(toDTO(e)));
         return new PageImpl<>(dtos, pageable, totalElement);
     }
+
     public ChannelInfoDTO getChannelInfoById(String id){
         ChannelEntity channelEntity= getChannelById(id);
 
@@ -122,6 +124,7 @@ public class ChannelService {
                 channelEntity.getCreatedDate()
         );
     }
+
     public ChannelInfoDTO changeChannelStatusAdmin(String id){
         ChannelEntity channelEntity =getJustChannelById(id);
         if(channelEntity.getStatus().equals(GeneralStatusEnum.BLOCKED)){
@@ -133,6 +136,7 @@ public class ChannelService {
 
         return toDTO(channelEntity);
     }
+
     public List<ChannelInfoDTO>GetUsersChannelsById(Integer id){
       List<ChannelEntity>  list= channelRepository.getChannelEntitiesByProfileId(id.toString());
         List<ChannelInfoDTO> dtoList = list.stream()
@@ -140,7 +144,6 @@ public class ChannelService {
                 .toList();
         return dtoList;
     }
-
     private ChannelInfoDTO toDTO(ChannelEntity e) {
         if(e.getStatus().equals(GeneralStatusEnum.BLOCKED)){
 
@@ -165,6 +168,7 @@ public class ChannelService {
                 e.getCreatedDate()
         );
     }
+
     private ChannelEntity getChannelById(String id) {
         ChannelEntity isExist = channelRepository.findByIdAndStatusIsActive(id).orElseThrow(() -> {
             throw new AppBadException("Channel not found");
@@ -174,6 +178,7 @@ public class ChannelService {
 
 
     }
+
     private ChannelEntity getJustChannelById(String id) {
         ChannelEntity isExist = channelRepository.findById(id).orElseThrow(() -> {
             throw new AppBadException("Channel not found");
@@ -183,12 +188,12 @@ public class ChannelService {
 
 
     }
+
     private ChannelEntity getChannelByName(String id) {
         return channelRepository.findByName(id).orElse(null);
 
 
     }
-
 
     private AttachEntity getAttachById(String photoId) {
         AttachEntity isExist = attachRepository.findById(photoId).orElseThrow(() -> {
@@ -200,7 +205,6 @@ public class ChannelService {
 
     }
 
-
     private ProfileEntity getProfileById(Integer id) {
         ProfileEntity isExist = profileRepository.findByIdAndStatusIsActive(id).orElseThrow(() -> {
             throw new AppBadException("Profile not found");
@@ -211,4 +215,7 @@ public class ChannelService {
 
     }
 
+    public boolean isProfileChannelOwner(Integer profileId, String channelId) {
+        return channelRepository.findByIdAndProfileId(channelId, profileId) != null;
+    }
 }
