@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VideoUpdateDTO {
+public class VideoDetailUpdateDTO {
     @NotBlank(message = "Title should not be empty")
     private String title;
 

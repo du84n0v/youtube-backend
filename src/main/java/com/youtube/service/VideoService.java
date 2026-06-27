@@ -1,13 +1,15 @@
 package com.youtube.service;
 
 import com.youtube.dto.video.VideoCreateDTO;
-import com.youtube.dto.video.VideoUpdateDTO;
+import com.youtube.dto.video.VideoDetailUpdateDTO;
+import com.youtube.dto.video.VideoStatusUpdateDTO;
 import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.VideoRepository;
 import com.youtube.util.SpringSecurityUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,7 @@ public class VideoService {
     private AttachService attachService;
 
     public String create(VideoCreateDTO dto) {
-        if(!channelService.isProfileChannelOwner(SpringSecurityUtil.getCurrentProfileId(), dto.getChannelId())){
-            throw new AppBadException("You can upload video only your channel");
-        }
+        isProfileChannelOwner(dto.getChannelId());
 
         if(attachService.findById(dto.getPreviewAttachId()) == null){
             throw new ItemNotFoundException("Preview attach not found");
@@ -60,13 +60,11 @@ public class VideoService {
         video.setDislikeCount(0L);
     }
 
-    public String updateDetail(String videoId, VideoUpdateDTO dto) {
+    public String updateDetail(String videoId, VideoDetailUpdateDTO dto) {
         VideoEntity video = videoRepository.findById(videoId)
                 .orElseThrow(() -> new ItemNotFoundException("Video not found"));
 
-        if(channelService.isProfileChannelOwner(SpringSecurityUtil.getCurrentProfileId(), video.getChannelId())){
-            throw new AppBadException("You only update your videos");
-        }
+        isProfileChannelOwner(video.getChannelId());
 
         video.setTitle(dto.getTitle());
         video.setDescription(dto.getDescription());
@@ -83,5 +81,20 @@ public class VideoService {
         videoRepository.save(video);
 
         return "Successfully updated";
+    }
+
+    public String updateStatus(VideoStatusUpdateDTO dto) {
+        int effRow = videoRepository.changeVideoStatus(dto.getVideoId(), dto.getStatus(), SpringSecurityUtil.getCurrentProfileId());
+
+        if(effRow > 0){
+            return "Successfully changed";
+        }
+        throw new AppBadException("Video not found or this video is not yours");
+    }
+
+    private void isProfileChannelOwner(String channelId){
+        if(!channelService.isProfileChannelOwner(SpringSecurityUtil.getCurrentProfileId(), channelId)){
+            throw new AppBadException("This video is not yours!");
+        }
     }
 }

@@ -1,7 +1,8 @@
 package com.youtube.controller;
 
 import com.youtube.dto.video.VideoCreateDTO;
-import com.youtube.dto.video.VideoUpdateDTO;
+import com.youtube.dto.video.VideoStatusUpdateDTO;
+import com.youtube.dto.video.VideoDetailUpdateDTO;
 import com.youtube.service.VideoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,13 @@ public class VideoController {
 
     @PutMapping("/update/detail/{videoId}")
     public ResponseEntity<String> updateDetail(@PathVariable String videoId,
-                                               @Valid @RequestBody VideoUpdateDTO dto){
+                                               @Valid @RequestBody VideoDetailUpdateDTO dto){
         return ResponseEntity.ok(videoService.updateDetail(videoId, dto));
     }
+
+    @PutMapping("/update/status")
+    public ResponseEntity<String> updateStatus(@Valid @RequestBody VideoStatusUpdateDTO dto){
+        return ResponseEntity.ok(videoService.updateStatus(dto));
+    }
+
 }
