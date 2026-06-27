@@ -1,11 +1,13 @@
 package com.youtube.controller;
 
 import com.youtube.dto.video.VideoCreateDTO;
+import com.youtube.dto.video.VideoShortInfoDTO;
 import com.youtube.dto.video.VideoStatusUpdateDTO;
 import com.youtube.dto.video.VideoDetailUpdateDTO;
 import com.youtube.service.VideoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,13 @@ public class VideoController {
     @PutMapping("/increase/view-count/{videoId}")
     public ResponseEntity<Integer> increaseViewCount(@PathVariable String videoId){
         return ResponseEntity.ok(videoService.increaseViewCount(videoId));
+    }
+
+    @GetMapping("/category-id/{categoryId}")
+    public ResponseEntity<Page<VideoShortInfoDTO>> getByCategory(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                                 @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                                                 @PathVariable Integer categoryId){
+        return ResponseEntity.ok(videoService.getVideosByCategory(categoryId, page-1, size));
     }
 
 }

@@ -1,17 +1,26 @@
 package com.youtube.service;
 
+import com.youtube.dto.channel.ChannelShortInfoDTO;
 import com.youtube.dto.video.VideoCreateDTO;
 import com.youtube.dto.video.VideoDetailUpdateDTO;
+import com.youtube.dto.video.VideoShortInfoDTO;
 import com.youtube.dto.video.VideoStatusUpdateDTO;
 import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
+import com.youtube.mapper.VideoShortInfoMapper;
 import com.youtube.repository.VideoRepository;
 import com.youtube.util.SpringSecurityUtil;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 
 @Service
 public class VideoService {
@@ -107,5 +116,32 @@ public class VideoService {
         throw new AppBadException("Something went wrong");
     }
 
+    public Page<VideoShortInfoDTO> getVideosByCategory(Integer categoryId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
 
+        Page<VideoShortInfoMapper> pages = videoRepository.getVideosByCategory(categoryId, pageable);
+
+        List<VideoShortInfoDTO> response = pages.stream()
+                .map(this::mapperToShortInfoDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    private VideoShortInfoDTO mapperToShortInfoDto(VideoShortInfoMapper mapper){
+        VideoShortInfoDTO dto = new VideoShortInfoDTO();
+        dto.setId(mapper.getId());
+        dto.setTitle(mapper.getTitle());
+        dto.setPublishedDate(mapper.getPublishedDate());
+        dto.setDuration(mapper.getDuration());
+        dto.setViewCount(mapper.getViewCount());
+        dto.setPreview(attachService.openDTO(mapper.getPreviewId()));
+        dto.setChannel(new ChannelShortInfoDTO(
+                mapper.getChannelId(),
+                mapper.getChannelName(),
+                attachService.openDTO(mapper.getChannelPhotoId()).getUrl()
+        ));
+
+        return dto;
+    }
 }
