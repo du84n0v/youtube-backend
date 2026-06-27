@@ -1,6 +1,7 @@
 package com.youtube.service;
 
 import com.youtube.dto.video.VideoCreateDTO;
+import com.youtube.dto.video.VideoUpdateDTO;
 import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
@@ -57,5 +58,30 @@ public class VideoService {
         video.setSharedCount(0L);
         video.setLikeCount(0L);
         video.setDislikeCount(0L);
+    }
+
+    public String updateDetail(String videoId, VideoUpdateDTO dto) {
+        VideoEntity video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new ItemNotFoundException("Video not found"));
+
+        if(channelService.isProfileChannelOwner(SpringSecurityUtil.getCurrentProfileId(), video.getChannelId())){
+            throw new AppBadException("You only update your videos");
+        }
+
+        video.setTitle(dto.getTitle());
+        video.setDescription(dto.getDescription());
+        video.setStatus(dto.getStatus());
+        video.setCategoryId(dto.getCategoryId());
+        if(!video.getPreviewAttachId().equals(dto.getPreviewAttachId())){
+            boolean ok = attachService.delete(video.getAttachId());
+            if(!ok){
+                throw new AppBadException("Something went wrong");
+            }
+            video.setPreviewAttachId(dto.getPreviewAttachId());
+        }
+
+        videoRepository.save(video);
+
+        return "Successfully updated";
     }
 }
