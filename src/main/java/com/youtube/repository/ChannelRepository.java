@@ -24,4 +24,6 @@ public interface ChannelRepository extends CrudRepository<ChannelEntity,String> 
 
     @Query("from ChannelEntity where profileId=:id and status='ACTIVE'")
     List<ChannelEntity> getChannelEntitiesByProfileId(String id);
+
+    ChannelEntity findByIdAndProfileId(String channelId, Integer profileId);
 }

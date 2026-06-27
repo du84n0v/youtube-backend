@@ -1,5 +1,6 @@
 package com.youtube.service;
 
+import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.dto.profile.*;
 import com.youtube.entity.AttachEntity;
 import com.youtube.entity.EmailHistoryEntity;
@@ -163,8 +164,12 @@ public class ProfileService {
         response.setName(profile.getName());
         response.setSurname(profile.getSurname());
         response.setEmail(profile.getEmail());
+
         if (profile.getPhotoId() != null) {
-            response.setMainPhoto(attachService.openDTO(profile.getPhotoId()));
+            response.setMainPhoto(new AttachShortInfoDTO(
+                    profile.getPhotoId(),
+                    attachService.openURL(profile.getPhotoId())
+            ));
         }
 
         return response;
