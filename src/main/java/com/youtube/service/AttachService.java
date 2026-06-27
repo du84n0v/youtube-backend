@@ -143,7 +143,7 @@ public class AttachService {
     }
     public AttachShortInfoDTO openDTO(String id) {
 
-        return new AttachShortInfoDTO(id, attachUrl + "/attach/open/" + id);
+        return new AttachShortInfoDTO(id, attachUrl + "/api/v1/attach/open/" + id);
     }
 
     private String getYmDString() {

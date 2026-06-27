@@ -1,10 +1,8 @@
 package com.youtube.service;
 
+import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.dto.channel.ChannelShortInfoDTO;
-import com.youtube.dto.video.VideoCreateDTO;
-import com.youtube.dto.video.VideoDetailUpdateDTO;
-import com.youtube.dto.video.VideoShortInfoDTO;
-import com.youtube.dto.video.VideoStatusUpdateDTO;
+import com.youtube.dto.video.*;
 import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
@@ -35,11 +33,11 @@ public class VideoService {
     public String create(VideoCreateDTO dto) {
         isProfileChannelOwner(dto.getChannelId());
 
-        if(attachService.findById(dto.getPreviewAttachId()) == null){
+        if (attachService.findById(dto.getPreviewAttachId()) == null) {
             throw new ItemNotFoundException("Preview attach not found");
         }
 
-        if(attachService.findById(dto.getAttachId()) == null){
+        if (attachService.findById(dto.getAttachId()) == null) {
             throw new ItemNotFoundException("Video not found");
         }
 
@@ -62,7 +60,7 @@ public class VideoService {
         video.setChannelId(dto.getChannelId());
         video.setType(dto.getType());
         video.setStatus(dto.getStatus());
-        if(dto.getStatus().equals(VideoStatusEnum.PRIVATE)) video.setPublishedDate(null);
+        if (dto.getStatus().equals(VideoStatusEnum.PRIVATE)) video.setPublishedDate(null);
         video.setViewCount(0L);
         video.setSharedCount(0L);
         video.setLikeCount(0L);
@@ -79,9 +77,9 @@ public class VideoService {
         video.setDescription(dto.getDescription());
         video.setStatus(dto.getStatus());
         video.setCategoryId(dto.getCategoryId());
-        if(!video.getPreviewAttachId().equals(dto.getPreviewAttachId())){
+        if (!video.getPreviewAttachId().equals(dto.getPreviewAttachId())) {
             boolean ok = attachService.delete(video.getAttachId());
-            if(!ok){
+            if (!ok) {
                 throw new AppBadException("Something went wrong");
             }
             video.setPreviewAttachId(dto.getPreviewAttachId());
@@ -95,14 +93,14 @@ public class VideoService {
     public String updateStatus(VideoStatusUpdateDTO dto) {
         int effRow = videoRepository.changeVideoStatus(dto.getVideoId(), dto.getStatus(), SpringSecurityUtil.getCurrentProfileId());
 
-        if(effRow > 0){
+        if (effRow > 0) {
             return "Successfully changed";
         }
         throw new AppBadException("Video not found or this video is not yours");
     }
 
-    private void isProfileChannelOwner(String channelId){
-        if(!channelService.isProfileChannelOwner(SpringSecurityUtil.getCurrentProfileId(), channelId)){
+    private void isProfileChannelOwner(String channelId) {
+        if (!channelService.isProfileChannelOwner(SpringSecurityUtil.getCurrentProfileId(), channelId)) {
             throw new AppBadException("This video is not yours!");
         }
     }
@@ -110,7 +108,7 @@ public class VideoService {
     public Integer increaseViewCount(String videoId) {
         int effRow = videoRepository.increaseViewCount(videoId);
 
-        if(effRow > 0){
+        if (effRow > 0) {
             return videoRepository.findViewCountById(videoId);
         }
         throw new AppBadException("Something went wrong");
@@ -128,20 +126,40 @@ public class VideoService {
         return new PageImpl<>(response, pageable, pages.getTotalElements());
     }
 
-    private VideoShortInfoDTO mapperToShortInfoDto(VideoShortInfoMapper mapper){
+    private VideoShortInfoDTO mapperToShortInfoDto(VideoShortInfoMapper mapper) {
         VideoShortInfoDTO dto = new VideoShortInfoDTO();
         dto.setId(mapper.getId());
         dto.setTitle(mapper.getTitle());
         dto.setPublishedDate(mapper.getPublishedDate());
         dto.setDuration(mapper.getDuration());
         dto.setViewCount(mapper.getViewCount());
-        dto.setPreview(attachService.openDTO(mapper.getPreviewId()));
-        dto.setChannel(new ChannelShortInfoDTO(
-                mapper.getChannelId(),
-                mapper.getChannelName(),
-                attachService.openDTO(mapper.getChannelPhotoId()).getUrl()
-        ));
+
+        if (mapper.getPreview() != null) {
+            dto.setPreview(new AttachShortInfoDTO(
+                    mapper.getPreview().getId(),
+                    attachService.openURL(mapper.getPreview().getId())
+            ));
+        }
+
+        if (mapper.getChannel() != null) {
+            dto.setChannel(new ChannelShortInfoDTO(
+                    mapper.getChannel().getId(),
+                    mapper.getChannel().getName(),
+                    attachService.openURL(mapper.getChannel().getPhotoId())
+            ));
+        }
 
         return dto;
+    }
+
+    public Page<VideoShortInfoDTO> search(VideoSearchDTO dto, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VideoShortInfoMapper> pages = videoRepository.searchByTitle("%" + dto.getSearch() + "%", pageable);
+
+        List<VideoShortInfoDTO> response = pages.stream()
+                .map(this::mapperToShortInfoDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
     }
 }

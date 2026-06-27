@@ -1,9 +1,6 @@
 package com.youtube.controller;
 
-import com.youtube.dto.video.VideoCreateDTO;
-import com.youtube.dto.video.VideoShortInfoDTO;
-import com.youtube.dto.video.VideoStatusUpdateDTO;
-import com.youtube.dto.video.VideoDetailUpdateDTO;
+import com.youtube.dto.video.*;
 import com.youtube.service.VideoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +42,13 @@ public class VideoController {
                                                                  @PathVariable Integer categoryId){
         return ResponseEntity.ok(videoService.getVideosByCategory(categoryId, page-1, size));
     }
+
+    @PostMapping("/search")
+    public ResponseEntity<Page<VideoShortInfoDTO>> search(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                    @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                                    @RequestBody VideoSearchDTO dto){
+        return ResponseEntity.ok(videoService.search(dto, page-1, size));
+    }
+
 
 }
