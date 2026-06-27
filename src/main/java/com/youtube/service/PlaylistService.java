@@ -78,7 +78,7 @@ public class PlaylistService {
 
     public PageImpl<PlaylistResponseDto> pagination(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdDate").descending());
-        Page<PlaylistEntity> result = playlistRepository.findAll(pageable);
+        Page<PlaylistEntity> result = playlistRepository.findAllVisibleTrue(pageable);
         return toPagWithFullInfo(result, pageable);
     }
 
