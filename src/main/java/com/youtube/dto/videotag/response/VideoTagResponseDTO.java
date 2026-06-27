@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class VideoTagDTO {
+public class VideoTagResponseDTO {
 
     private Integer id;
     private Integer videoId;

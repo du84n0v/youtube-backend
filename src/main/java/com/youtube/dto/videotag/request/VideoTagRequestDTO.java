@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VideoTagDTO {
+public class VideoTagRequestDTO {
 private Integer videoId;
 private Integer tagId;
 
