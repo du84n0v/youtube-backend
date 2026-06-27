@@ -2,6 +2,7 @@ package com.youtube.controller;
 
 import com.youtube.dto.playlist.request.PlaylistRequestDto;
 import com.youtube.dto.playlist.request.PlaylistUpdateRequestDto;
+import com.youtube.dto.playlist.request.PlaylistUpdateStatusRequestDto;
 import com.youtube.dto.playlist.response.PlaylistResponseDto;
 import com.youtube.dto.playlist.response.PlaylistShortInfoDto;
 import com.youtube.service.PlaylistService;
@@ -30,6 +31,12 @@ public class PlaylistController {
         return ResponseEntity.ok(playlistService.update(dto));
     }
 
+    @PutMapping("/update/status")
+    public ResponseEntity<PlaylistResponseDto> updateStatus(@RequestBody PlaylistUpdateStatusRequestDto dto) {
+        return ResponseEntity.ok(playlistService.updateStatus(dto));
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(playlistService.delete(id));
@@ -48,17 +55,19 @@ public class PlaylistController {
         return ResponseEntity.ok(playlistService.getListByUserId(id));
     }
 
-    //7. Get User Playlist (order by order number desc) (murojat qilgan user ni)
-    //        PlayListShortInfo
-
-    @GetMapping("/pagination/user-joined/")
-    public ResponseEntity<PageImpl<PlaylistShortInfoDto>> userJoinedPag(@RequestParam(value = "page", defaultValue = "1") int page,
+    @GetMapping("/pagination/playlist-short-info/")
+    public ResponseEntity<PageImpl<PlaylistShortInfoDto>> playlistShortInfoPag(@RequestParam(value = "page", defaultValue = "1") int page,
                                                                @RequestParam(value = "size", defaultValue = "10") int size){
-        return ResponseEntity.ok(playlistService.getUserJoinedPag(PageUtil.page(page), size));
+        return ResponseEntity.ok(playlistService.shortInfoDtoPag(PageUtil.page(page), size));
     }
 
     @GetMapping("/channel/{channelKey}/playlists")
     public ResponseEntity<List<PlaylistShortInfoDto>>  listByChannel(@PathVariable String channelKey){
         return ResponseEntity.ok(playlistService.listByChannelKey(channelKey));
+    }
+
+    @GetMapping("/get/{id}/by-playlist-id")
+    public ResponseEntity<PlaylistShortInfoDto> getById(@PathVariable Integer id){
+        return ResponseEntity.ok(playlistService.getById(id));
     }
 }

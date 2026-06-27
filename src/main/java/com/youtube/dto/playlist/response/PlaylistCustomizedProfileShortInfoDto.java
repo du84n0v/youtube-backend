@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PlaylistCustomizedProfileShortInfoDto {
+    private Integer id;
     private String name;
     private String surname;
-    private String email;
+    private PlaylistCustomizedPhotoShortInfoDto photo;
 }
