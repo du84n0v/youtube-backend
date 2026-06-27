@@ -12,7 +12,7 @@ import java.util.List;
 public interface VideoTagRepository extends CrudRepository<VideoTagEntity, Integer> {
     boolean existsByVideoIdAndTagId(Integer videoId, Integer tagId);
 
-    List<VideoTagEntity> findAllByVideoId(Integer videoId);
+    List<VideoTagEntity> findAllByVideoId(String videoId);
 
 
     <T> Optional<T> findByVideoIdAndTagId(String videoId, Integer tagId, Class<T> type);
