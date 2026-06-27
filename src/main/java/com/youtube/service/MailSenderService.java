@@ -1,5 +1,6 @@
 package com.youtube.service;
 
+import com.youtube.enums.EmailCodeTypeEnum;
 import com.youtube.exception.AppBadException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -24,7 +25,7 @@ public class MailSenderService {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
-    public void sendVerificationCode(MailMessageDTO dto, String code) {
+    public void sendVerificationCode(MailMessageDTO dto, String code, EmailCodeTypeEnum type) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -36,17 +37,17 @@ public class MailSenderService {
 
             mailSender.send(message);
 
-            emailHistoryService.create(dto, code);
+            emailHistoryService.create(dto, code, type);
         } catch (MessagingException e) {
             throw new RuntimeException("Email yuborishda xatolik: " + e.getMessage());
         }
     }
 
-    public void verificationCode(String toAccount) {
-        runOut(toAccount);
+    public void verificationCode(String toAccount, EmailCodeTypeEnum type) {
+        runOut(toAccount, type);
         MailMessageDTO mailMessage = new MailMessageDTO();
         mailMessage.setToAccount(toAccount);
-        mailMessage.setSubject("Top News - Tasdiqlash kodi");
+        mailMessage.setSubject("YouTube - Tasdiqlash kodi");
         String code = generateCode();
 
         String body = "<div style=\"font-family: Arial; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #eee;\">" +
@@ -58,11 +59,11 @@ public class MailSenderService {
                 "<p style=\"color: #666;\">Iltimos, ushbu kodni hech kimga bermang.</p>" +
                 "</div>";
         mailMessage.setBody(body);
-        sendVerificationCode(mailMessage, code);
+        sendVerificationCode(mailMessage, code, type);
 
     }
 
-    private void runOut(String toAccount) {
+    private void runOut(String toAccount, EmailCodeTypeEnum type) {
         LocalDateTime from = LocalDateTime.now().minusMinutes(1);
         int cnt = emailHistoryService.getCountAfter(toAccount, from);
         if(cnt >= 4){

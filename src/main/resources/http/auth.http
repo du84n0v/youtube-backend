@@ -16,6 +16,8 @@ Content-Type: application/json
 {
   "email": "jziyodullayev678@gmail.com",
   "code": "378024"
+  "email": "oqmol24@gmail.com",
+  "code": "774064"
 }
 
 ###login
@@ -25,4 +27,15 @@ Content-Type: application/json
 {
   "email": "jziyodullayev678@gmail.com",
   "password": "54321"
+  "email": "admin@gmail.com",
+  "password": "00000"
+}
+
+###login
+POST localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "sadriddindusanov@gmail.com",
+  "password": "12345"
 }

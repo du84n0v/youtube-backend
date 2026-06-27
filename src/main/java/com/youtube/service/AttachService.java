@@ -1,8 +1,10 @@
 package com.youtube.service;
 
 import com.youtube.dto.AttachDTO;
+import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.entity.AttachEntity;
 import com.youtube.exception.AppBadException;
+import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.AttachRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -139,7 +141,10 @@ public class AttachService {
         entityList.forEach(e -> dtos.add(toDTO(e)));
         return new PageImpl<>(dtos, pageable, totalElement);
     }
+    public AttachShortInfoDTO openDTO(String id) {
 
+        return new AttachShortInfoDTO(id, attachUrl + "/attach/open/" + id);
+    }
 
     private String getYmDString() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -169,4 +174,8 @@ public class AttachService {
     }
 
 
+    public AttachEntity findById(String attachId) {
+        return attachRepository.findById(attachId)
+                .orElseThrow(() -> new ItemNotFoundException("Attach not found"));
+    }
 }
