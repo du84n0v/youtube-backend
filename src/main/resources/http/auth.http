@@ -27,8 +27,6 @@ Content-Type: application/json
 {
   "email": "jziyodullayev678@gmail.com",
   "password": "54321"
-  "email": "admin@gmail.com",
-  "password": "00000"
 }
 
 ###login

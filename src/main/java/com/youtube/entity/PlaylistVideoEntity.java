@@ -33,5 +33,8 @@ public class PlaylistVideoEntity {
     private LocalDateTime  createdDate;
 
     @Column(name = "order_num")
-    private String orderNumber;
+    private Integer orderNumber;
+
+    @Column(name = "visible")
+    private Boolean visible = Boolean.TRUE;
 }
