@@ -1,22 +1,25 @@
 package com.youtube.service;
 
 
-import com.youtube.dto.videotag.request.VideoTagRequestDTO;
-import com.youtube.dto.videotag.response.VideoTagResponseDTO;
+import com.youtube.dto.tag.response.TagResponseDto;
+import com.youtube.dto.tag.response.VideoTagFullInfoDTO;
+import com.youtube.dto.videotag.VideoTagDTO;
 import com.youtube.entity.ChannelEntity;
 import com.youtube.entity.TagEntity;
 import com.youtube.entity.VideoEntity;
 import com.youtube.entity.VideoTagEntity;
 import com.youtube.exception.AppBadException;
-import com.youtube.mapper.VideoTagInfoMapper;
+import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.TagRepository;
 import com.youtube.repository.VideoRepository;
 import com.youtube.repository.VideoTagRepository;
-import org.hibernate.internal.util.Optional;
+import com.youtube.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VideoTagService {
@@ -28,14 +31,11 @@ public class VideoTagService {
     @Autowired
     private VideoRepository videoRepository;
 
-
-
-    public Optional<VideoTagInfoMapper> addTagToVideo(VideoTagRequestDTO dto, Integer currentProfileId ) {
-
-        VideoEntity video = videoRepository.findById(String.valueOf(dto.getVideoId()))
+    public String addTagToVideo(VideoTagDTO dto ) {
+        VideoEntity video = videoRepository.findById(dto.getVideoId())
                 .orElseThrow(()-> new AppBadException("Video not found!"));
 
-        chekOwner(video,  currentProfileId);
+        checkOwner(video, SpringSecurityUtil.getCurrentProfileId());
 
         TagEntity tag = tagRepository.findById(dto.getTagId())
                 .orElseThrow(()-> new AppBadException("Tag not found!"));
@@ -49,35 +49,45 @@ public class VideoTagService {
         videoTag.setTagId(tag.getId());
         videoTagRepository.save(videoTag);
 
-        return videoTagRepository.findByVideoIdAndTagId(dto.getVideoId(), dto.getTagId());
-
-
-
-
+        return "Successfully added";
     }
-    public void deleteTagFromVideo(VideoTagRequestDTO dto, Integer currentProfileId) {
-        VideoEntity video = videoRepository.findById(String.valueOf(dto.getVideoId()))
+
+    public String deleteTagFromVideo(VideoTagDTO dto) {
+        VideoEntity video = videoRepository.findById(dto.getVideoId())
                 .orElseThrow(() -> new AppBadException("Video not found"));
 
-        chekOwner(video, currentProfileId);
+        checkOwner(video, SpringSecurityUtil.getCurrentProfileId());
 
-        if (!videoTagRepository.existsByVideoIdAndTagId(dto.getVideoId(), dto.getTagId())) {
-            throw new AppBadException("Tag not found in this video");
+        Optional<VideoTagEntity> optional = videoTagRepository.findByVideoIdAndTagId(dto.getVideoId(), dto.getTagId());
+        if(optional.isEmpty()){
+            throw new ItemNotFoundException("Video tag not found");
         }
 
-        videoTagRepository.deleteByVideoIdAndTagId(String.valueOf(dto.getVideoId()), dto.getTagId());
+        videoTagRepository.delete(optional.get());
+
+        return "Successfully deleted";
     }
 
-   public List<VideoTagEntity> getTagListByVideoId(String videoId) {
+   public List<VideoTagFullInfoDTO> getTagListByVideoId(String videoId) {
         videoRepository.findById(videoId).orElseThrow(()-> new AppBadException("video not found!"));
 
-        return videoTagRepository.findAllByVideoId(videoId);
+        List<VideoTagEntity> videoTags = videoTagRepository.findAllByVideoId(videoId);
 
+        List<VideoTagFullInfoDTO> response = new ArrayList<>();
+       for (VideoTagEntity videoTag : videoTags) {
+           VideoTagFullInfoDTO dto = new VideoTagFullInfoDTO();
+           dto.setId(videoTag.getId());
+           dto.setVideoId(videoTag.getVideoId());
+           dto.setCreatedDate(videoTag.getCreatedDate());
+           dto.setTagInfo(new TagResponseDto(videoTag.getTagId(), videoTag.getTag().getName(), null));
+
+           response.add(dto);
+       }
+
+       return response;
    }
 
-
-
-    private void chekOwner(VideoEntity videoEntity , Integer currentProfileId) {
+    private void checkOwner(VideoEntity videoEntity , Integer currentProfileId) {
         ChannelEntity channel = videoEntity.getChannel();
 
         if (channel==null) {

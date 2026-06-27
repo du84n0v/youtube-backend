@@ -2,12 +2,12 @@ package com.youtube.controller;
 
 
 import com.youtube.config.security.CustomUserDetails;
-import com.youtube.dto.videotag.VideoTagRequestDTO;
+import com.youtube.dto.tag.response.VideoTagFullInfoDTO;
+import com.youtube.dto.videotag.VideoTagDTO;
 import com.youtube.entity.VideoTagEntity;
-import com.youtube.mapper.VideoTagInfoMapper;
 import com.youtube.service.VideoTagService;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.internal.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,34 +17,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/video-tag")
-@RequiredArgsConstructor
 public class VideoTagController {
 
-    private final VideoTagService videoTagService;
+    @Autowired
+    private VideoTagService videoTagService;
 
-    @PreAuthorize(("hasRoleAny('USER')"))
     @PostMapping("/add")
-    public ResponseEntity<Optional<VideoTagInfoMapper>> addTag(
-            @RequestBody VideoTagRequestDTO dto,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-            ){
-        return ResponseEntity.ok(videoTagService.addTagToVideo(dto, userDetails.getId()));
+    public ResponseEntity<String> addTag(@RequestBody VideoTagDTO dto){
+        return ResponseEntity.ok(videoTagService.addTagToVideo(dto));
     }
 
-    @PreAuthorize("hasRoleAny('USER')")
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteTag(
-            @RequestBody VideoTagRequestDTO dto,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ){
-        videoTagService.deleteTagFromVideo(dto, userDetails.getId());
-        return ResponseEntity.ok("Tag deleted successfully");
+    public ResponseEntity<String> deleteTag(@RequestBody VideoTagDTO dto){
+        return ResponseEntity.ok(videoTagService.deleteTagFromVideo(dto));
     }
 
-    @GetMapping("list/{videoId}")
-    public ResponseEntity<List<VideoTagEntity>> getListTag(
-         @PathVariable String videoId
-    ){
+    @GetMapping("/list/{videoId}")
+    public ResponseEntity<List<VideoTagFullInfoDTO>> getListTag(@PathVariable String videoId){
         return ResponseEntity.ok(videoTagService.getTagListByVideoId(videoId));
     }
 

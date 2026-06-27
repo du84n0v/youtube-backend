@@ -1,6 +1,5 @@
 package com.youtube.dto.tag.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class TagResponseDto {
+public class VideoTagFullInfoDTO {
     private Integer id;
-    private String name;
+    private String videoId;
+    private TagResponseDto tagInfo;
     private LocalDateTime createdDate;
 }
