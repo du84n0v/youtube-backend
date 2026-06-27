@@ -1,3 +1,10 @@
+### create
+POST localhost:8081/api/v1/category/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjMsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyNDAwMjM5LCJleHAiOjE3ODI0ODY2Mzl9.TZO4P5eQBzvecl81MW9eH1HpPMtGze55q3J0acNJOz8yG-3PnJjuYBc1Sx2ophAp
+
+{
+  "name": "POLITICS"
 ###add category
 POST localhost:8080/api/v1/category/create
 Content-Type: application/json

@@ -1,28 +1,32 @@
 ###register
-POST localhost:8080/api/v1/auth/register
+POST localhost:8081/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "name": "Alish",
-  "surname": "Alishev",
-  "email": "oqmol24@gmail.com",
-  "password": "12345"
+  "name": "Jahongir",
+  "surname": "Ziyodullaev",
+  "email": "jziyodullayev678@gmail.com",
+  "password": "54321"
 }
 
 ###verify
-POST localhost:8080/api/v1/auth/verify
+POST localhost:8081/api/v1/auth/verify
 Content-Type: application/json
 
 {
+  "email": "jziyodullayev678@gmail.com",
+  "code": "378024"
   "email": "oqmol24@gmail.com",
   "code": "774064"
 }
 
 ###login
-POST localhost:8080/api/v1/auth/login
+POST localhost:8081/api/v1/auth/login
 Content-Type: application/json
 
 {
+  "email": "jziyodullayev678@gmail.com",
+  "password": "54321"
   "email": "admin@gmail.com",
   "password": "00000"
 }
