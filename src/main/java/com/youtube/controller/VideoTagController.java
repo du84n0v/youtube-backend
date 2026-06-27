@@ -1,16 +1,11 @@
 package com.youtube.controller;
 
 
-import com.youtube.config.security.CustomUserDetails;
 import com.youtube.dto.tag.response.VideoTagFullInfoDTO;
 import com.youtube.dto.videotag.VideoTagDTO;
-import com.youtube.entity.VideoTagEntity;
 import com.youtube.service.VideoTagService;
-import org.hibernate.internal.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
