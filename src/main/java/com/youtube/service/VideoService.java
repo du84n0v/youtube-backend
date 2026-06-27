@@ -97,4 +97,15 @@ public class VideoService {
             throw new AppBadException("This video is not yours!");
         }
     }
+
+    public Integer increaseViewCount(String videoId) {
+        int effRow = videoRepository.increaseViewCount(videoId);
+
+        if(effRow > 0){
+            return videoRepository.findViewCountById(videoId);
+        }
+        throw new AppBadException("Something went wrong");
+    }
+
+
 }

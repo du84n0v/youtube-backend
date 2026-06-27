@@ -13,4 +13,13 @@ public interface VideoRepository extends CrudRepository<VideoEntity, String> {
     @Modifying
     @Query("UPDATE VideoEntity v SET v.status = ?2 WHERE v.id = ?1 AND v.channel.profileId = ?3 ")
     int changeVideoStatus(String videoId, VideoStatusEnum status, Integer profileId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE VideoEntity  v " +
+            " SET v.viewCount = v.viewCount + 1 " +
+            "WHERE v.id = ?1 ")
+    int increaseViewCount(String videoId);
+
+    Integer findViewCountById(String id);
 }
