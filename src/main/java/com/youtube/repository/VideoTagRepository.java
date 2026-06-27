@@ -26,5 +26,5 @@ public interface VideoTagRepository extends CrudRepository<VideoTagEntity, Integ
     void deleteByVideoIdAndTagId(String videoId, Integer tagId);
 
 
-
+    Optional findByVideoIdAndTagId(Integer videoId, Integer tagId);
 }
