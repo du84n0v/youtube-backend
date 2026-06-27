@@ -36,7 +36,7 @@ public class VideoController {
         return ResponseEntity.ok(videoService.increaseViewCount(videoId));
     }
 
-    @GetMapping("/category-id/{categoryId}")
+    @GetMapping("/by-category-id/{categoryId}")
     public ResponseEntity<Page<VideoShortInfoDTO>> getByCategory(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                                  @RequestParam(name = "size", defaultValue = "20") Integer size,
                                                                  @PathVariable Integer categoryId){
@@ -46,9 +46,8 @@ public class VideoController {
     @PostMapping("/search")
     public ResponseEntity<Page<VideoShortInfoDTO>> search(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "20") Integer size,
-                                                    @RequestBody VideoSearchDTO dto){
-        return ResponseEntity.ok(videoService.search(dto, page-1, size));
+                                                    @RequestBody VideoSearchDTO dto) {
+        return ResponseEntity.ok(videoService.search(dto, page - 1, size));
     }
-
 
 }
