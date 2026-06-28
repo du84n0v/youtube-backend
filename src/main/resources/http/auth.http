@@ -3,10 +3,10 @@ POST localhost:8081/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "name": "Jahongir",
-  "surname": "Ziyodullaev",
-  "email": "jziyodullayev678@gmail.com",
-  "password": "54321"
+  "name": "Azamat",
+  "surname": "O'rmonov",
+  "email": "azamaturmanov822@gmail.com",
+  "password": "12345"
 }
 
 ###verify
@@ -14,19 +14,8 @@ POST localhost:8081/api/v1/auth/verify
 Content-Type: application/json
 
 {
-  "email": "jziyodullayev678@gmail.com",
-  "code": "378024"
-  "email": "oqmol24@gmail.com",
-  "code": "774064"
-}
-
-###login
-POST localhost:8081/api/v1/auth/login
-Content-Type: application/json
-
-{
-  "email": "jziyodullayev678@gmail.com",
-  "password": "54321"
+  "email": "azamaturmanov822@gmail.com",
+  "code": "934905"
 }
 
 ###login
@@ -34,6 +23,6 @@ POST localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "sadriddindusanov@gmail.com",
+  "email": "azamaturmanov822@gmail.com",
   "password": "12345"
 }

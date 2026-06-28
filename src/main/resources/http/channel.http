@@ -1,2 +1,51 @@
-### POST
-POST localhost:8081/api/v1/c
+###create
+POST localhost:8080/api/v1/channel/create
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNjQyNzg5LCJleHAiOjE3ODI3MjkxODl9._sLMl7WRkEC73NgYPlAkCXGakaBoewsdT9s7CkejDP7j6yfn9lsHzNrGBlYENIUO
+
+{
+  "name": "T-series",
+  "bannerId": "5eb99f44-1d26-4fc6-a21f-67af9bed1635.png",
+  "photoId": "5eb99f44-1d26-4fc6-a21f-67af9bed1635.png",
+  "description": "Music can change the world\". T-Series is India's largest Music Label & Movie Studio, believes in bringing world close together through its music.\n\nFor over thirty years, we’ve been more than a label. We’ve been listeners archeologists of emotion, digging in every corner of India, collecting stories and music in all forms told in all Indian languages.\n\nAnd we believe that the language of the heart doesn’t need translation. It only needs a stage. So this is our stage. Yours and ours.\n\nAll music lovers who believe in the magic of music, come. Join us. Live the magic with T-Series."
+}
+### update
+PUT localhost:8080/api/v1/channel/update
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNjQyNzg5LCJleHAiOjE3ODI3MjkxODl9._sLMl7WRkEC73NgYPlAkCXGakaBoewsdT9s7CkejDP7j6yfn9lsHzNrGBlYENIUO
+
+{
+  "id": "cdbc494b-73e0-440c-950f-d128dbdf8aa2",
+  "name": "Kun_uz",
+  "description": "KUN.UZ yangiliklar saytining Youtube`dagi rasmiy kanaliga xush kelibsiz!\n\nRasmiy vebsayt: https://kun.uz\nTelegram kanalimiz: https://telegram.me/kunuzofficial\nFacebook`da kuzating: https://www.facebook.com/kunuznews\nTwitter`da kuzating: https://twitter.com/KunUzNews\nInstagram`da kuzating: https://www.instagram.com/kun.uz",
+  "photoId": "7c975e69-3562-4a14-a450-78834d3a5d42.jpg",
+  "bannerId": "7c975e69-3562-4a14-a450-78834d3a5d42.jpg"
+
+}
+
+
+
+#### Pagination
+GET localhost:8080/api/v1/channel/get/list/admin?page=1&size=10
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3ODI2NTkwMzksImV4cCI6MTc4Mjc0NTQzOX0.BYABa9jJiuldLNey-H8IEl9YzmL-Fc8d1uOqkSBLBhvRKviWV8vPY6I1zHodmYeK
+
+
+#### Get channel by id
+GET localhost:8080/api/v1/channel/get/by/id/55985c40-0bea-4d60-bdb9-dd0cc95cf2b0
+
+
+### Change status
+PUT localhost:8080/api/v1/channel/change/status/by/id/admin
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3ODI2NTkwMzksImV4cCI6MTc4Mjc0NTQzOX0.BYABa9jJiuldLNey-H8IEl9YzmL-Fc8d1uOqkSBLBhvRKviWV8vPY6I1zHodmYeK
+
+{
+  "status": "ACTIVE",
+  "channelId": "55985c40-0bea-4d60-bdb9-dd0cc95cf2b0"
+
+}
+
+### Get owner channels
+GET localhost:8080/api/v1/channel/get/list/owner
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNjYxNjY5LCJleHAiOjE3ODI3NDgwNjl9.pcrZAVX3DoKHNi8XYOTt4ctzjv82iTQ3tMEUUwGVHnJld2T_l86GH6KpA5_Uqn1t

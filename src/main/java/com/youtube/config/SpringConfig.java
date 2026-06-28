@@ -36,6 +36,10 @@ public class SpringConfig {
 
     public static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
+            "/api/v1/attach/upload",
+            "/api/v1/attach/open/**",
+            "/api/v1/attach/download/**",
+            "/api/v1/channel/get/by/id/{id}"
     };
 
     @Bean
@@ -50,6 +54,8 @@ public class SpringConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers("/api/v1/channel/get/list/admin").hasRole("ADMIN")
+                .requestMatchers("/api/v1/channel/change/status/by/id/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
