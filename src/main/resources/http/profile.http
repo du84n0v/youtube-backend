@@ -1,0 +1,65 @@
+###change password
+PUT localhost:8080/api/v1/profile/update/password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyMzk5ODg2LCJleHAiOjE3ODI0ODYyODZ9.zIpb4ND8Y0fVzwuwcMBGcc4YtpcSgT2SC7mxOIDDHFQwCQRvB4kT8HrpOK935MFs
+
+{
+  "oldPassword": "54321",
+  "newPassword": "12345"
+}
+
+###update password
+POST localhost:8080/api/v1/profile/update/email
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyNDYyNTU0LCJleHAiOjE3ODI1NDg5NTR9.U2SFnlPzMkHJuYDynNJVWlYdTP1axXzEEPEkuN9zIT0ZD4vujpKBmspe9k2Mxy68
+
+{
+  "email": "sadriddindusanov@gmail.com"
+}
+
+###verify and update email
+PUT localhost:8080/api/v1/profile/update/email-verify
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyNDYyNTU0LCJleHAiOjE3ODI1NDg5NTR9.U2SFnlPzMkHJuYDynNJVWlYdTP1axXzEEPEkuN9zIT0ZD4vujpKBmspe9k2Mxy68
+
+{
+  "email": "sadriddindusanov@gmail.com",
+  "code": "545292"
+}
+
+###update detail
+PUT localhost:8080/api/v1/profile/update/detail
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+{
+  "name": "Vali",
+  "surname": "Valiyev"
+}
+
+###update photo
+PUT localhost:8080/api/v1/profile/update/photo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+{
+  "attachId": "askjdbfgfasdjkbggfasdfjkbgbadfsjkkgas.qw34895yr"
+}
+
+###get profile
+GET localhost:8080/api/v1/profile/profile-detail/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+###create
+POST localhost:8080/api/v1/profile/create-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+
+{
+  "name": "Admin",
+  "surname": "Adminov",
+  "email": "admin@gmail.com",
+  "password": "00000",
+  "role": "ROLE_ADMIN"
+}
+

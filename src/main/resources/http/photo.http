@@ -1,0 +1,19 @@
+### POST
+POST http://localhost:8081/api/v1/article/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjMsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyNTUwODA0LCJleHAiOjE3ODI2MzcyMDR9.ne2TFL2koUOd6NSEHUyu_YWF0GuAeo-v18UiZVw0GX3PcUnuwRNPAzG3vZoOuQxT
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="Serdar.png"
+Content-Type: image/png
+
+< C:/Users/user/Desktop/Serdar.png
+--WebAppBoundary--
+
+### OPEN
+GET http://localhost:8081/api/v1/article/open/c0757b5f-6546-4cad-bffc-9ae8ce5868fb.png
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjMsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyNTUwODA0LCJleHAiOjE3ODI2MzcyMDR9.ne2TFL2koUOd6NSEHUyu_YWF0GuAeo-v18UiZVw0GX3PcUnuwRNPAzG3vZoOuQxT
+
+### DOWNLOAD
+GET http://localhost:8081/api/v1/article/download/c0757b5f-6546-4cad-bffc-9ae8ce5868fb.png
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjMsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyNTUwODA0LCJleHAiOjE3ODI2MzcyMDR9.ne2TFL2koUOd6NSEHUyu_YWF0GuAeo-v18UiZVw0GX3PcUnuwRNPAzG3vZoOuQxT
