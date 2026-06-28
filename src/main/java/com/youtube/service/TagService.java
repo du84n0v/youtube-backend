@@ -54,6 +54,7 @@ public class TagService {
         if (optional.isEmpty()){
             throw new AppBadException("Tag not found");
         }
+        tagRepository.deleteById(id);
         return Boolean.TRUE;
     }
 
