@@ -42,4 +42,13 @@ public interface VideoRepository extends CrudRepository<VideoEntity, String> {
             " INNER JOIN v.channel c " +
             " WHERE v.title ILIKE :search AND v.publishedDate IS NOT NULL ")
     Page<VideoShortInfoMapper> searchByTitle(@Param("search") String search, Pageable pageable);
+
+    @Query("SELECT v.id AS id, v.title AS title, v.viewCount AS viewCount," +
+            " v.publishedDate AS publishedDate, v.attach.duration AS duration," +
+            " v.previewPhoto as preview, v.channel AS channel " +
+            " FROM VideoEntity v " +
+            " INNER JOIN VideoTagEntity vt on vt.videoId = v.id " +
+            " INNER JOIN v.channel c " +
+            " WHERE vt.tagId = ?1 AND v.publishedDate IS NOT NULL ")
+    Page<VideoShortInfoMapper> getVideosByTag(Integer tagId, Pageable pageable);
 }

@@ -3,6 +3,7 @@ package com.youtube.controller;
 import com.youtube.dto.video.*;
 import com.youtube.service.VideoService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -16,38 +17,59 @@ public class VideoController {
     private VideoService videoService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody VideoCreateDTO dto){
+    public ResponseEntity<String> create(@Valid @RequestBody VideoCreateDTO dto) {
         return ResponseEntity.ok(videoService.create(dto));
     }
 
     @PutMapping("/update/detail/{videoId}")
     public ResponseEntity<String> updateDetail(@PathVariable String videoId,
-                                               @Valid @RequestBody VideoDetailUpdateDTO dto){
+                                               @Valid @RequestBody VideoDetailUpdateDTO dto) {
         return ResponseEntity.ok(videoService.updateDetail(videoId, dto));
     }
 
     @PutMapping("/update/status")
-    public ResponseEntity<String> updateStatus(@Valid @RequestBody VideoStatusUpdateDTO dto){
+    public ResponseEntity<String> updateStatus(@Valid @RequestBody VideoStatusUpdateDTO dto) {
         return ResponseEntity.ok(videoService.updateStatus(dto));
     }
 
     @PutMapping("/increase/view-count/{videoId}")
-    public ResponseEntity<Integer> increaseViewCount(@PathVariable String videoId){
+    public ResponseEntity<Integer> increaseViewCount(@PathVariable String videoId) {
         return ResponseEntity.ok(videoService.increaseViewCount(videoId));
     }
 
     @GetMapping("/by-category-id/{categoryId}")
     public ResponseEntity<Page<VideoShortInfoDTO>> getByCategory(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                                  @RequestParam(name = "size", defaultValue = "20") Integer size,
-                                                                 @PathVariable Integer categoryId){
-        return ResponseEntity.ok(videoService.getVideosByCategory(categoryId, page-1, size));
+                                                                 @PathVariable Integer categoryId) {
+        return ResponseEntity.ok(videoService.getVideosByCategory(categoryId, page - 1, size));
     }
 
     @PostMapping("/search")
     public ResponseEntity<Page<VideoShortInfoDTO>> search(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                    @RequestParam(name = "size", defaultValue = "20") Integer size,
-                                                    @RequestBody VideoSearchDTO dto) {
+                                                          @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                                          @RequestBody VideoSearchDTO dto) {
         return ResponseEntity.ok(videoService.search(dto, page - 1, size));
     }
 
+    @PostMapping("/by-tag-id/{tagId}")
+    public ResponseEntity<Page<VideoShortInfoDTO>> videosByTag(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                               @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                                               @PathVariable Integer tagId) {
+        return ResponseEntity.ok(videoService.getVideosByTag(tagId, page-1, size));
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

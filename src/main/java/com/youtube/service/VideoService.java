@@ -162,4 +162,18 @@ public class VideoService {
 
         return new PageImpl<>(response, pageable, pages.getTotalElements());
     }
+
+    public Page<VideoShortInfoDTO> getVideosByTag(Integer tagId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<VideoShortInfoMapper> pages = videoRepository.getVideosByTag(tagId, pageable);
+
+        List<VideoShortInfoDTO> response = pages.stream()
+                .map(this::mapperToShortInfoDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+
 }
