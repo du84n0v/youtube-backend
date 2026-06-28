@@ -1,14 +1,11 @@
 package com.youtube.service;
 
-import com.youtube.dto.channel.ChannelDTO;
-import com.youtube.dto.channel.ChannelInfoDTO;
-import com.youtube.dto.channel.ChannelUpdateDTO;
+import com.youtube.dto.channel.*;
 import com.youtube.entity.AttachEntity;
 import com.youtube.entity.ChannelEntity;
 import com.youtube.entity.ProfileEntity;
 import com.youtube.enums.GeneralStatusEnum;
 import com.youtube.exception.AppBadException;
-import com.youtube.exception.ChannelException;
 import com.youtube.exception.ChannelWithSuchNameExistsException;
 import com.youtube.repository.AttachRepository;
 import com.youtube.repository.ChannelRepository;
@@ -22,7 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,40 +40,43 @@ public class ChannelService {
 
 
 
-    public ChannelDTO create(ChannelDTO channelDTO) {
-        ChannelEntity channelEntity = getChannelByName(channelDTO.getName());
+    public ChannelResponseDTO create(ChannelRequestDTO requestDTO) {
+        ChannelEntity channelEntity = getChannelByName(requestDTO.getName());
         if (channelEntity != null) {
             throw new ChannelWithSuchNameExistsException("Channel with such name already exists");
 
         }
+
         ProfileEntity profile = getProfileById(SpringSecurityUtil.getCurrentProfileId());
-        AttachEntity photo = getAttachById(channelDTO.getPhotoId());
-        AttachEntity banner = getAttachById(channelDTO.getBannerId());
+        AttachEntity photo = getAttachById(requestDTO.getPhotoId());
+        AttachEntity banner = getAttachById(requestDTO.getBannerId());
 
         ChannelEntity channel = new ChannelEntity();
-        channel.setName(channelDTO.getName());
+        channel.setName(requestDTO.getName());
         channel.setOwner(profile);
         channel.setProfileId(profile.getId());
-        channel.setDescription(channelDTO.getDescription());
-        channel.setPhotoId(channelDTO.getPhotoId());
+        channel.setDescription(requestDTO.getDescription());
+        channel.setPhotoId(requestDTO.getPhotoId());
         channel.setPhoto(photo);
-        channel.setBannerId(channelDTO.getBannerId());
+        channel.setBannerId(requestDTO.getBannerId());
         channel.setBanner(banner);
         channel.setStatus(GeneralStatusEnum.ACTIVE);
         channelRepository.save(channel);
-        channelDTO.setId(channel.getId());
-        return channelDTO;
+        return toResponseDTO(channel);
+
 
     }
     public ChannelUpdateDTO update(ChannelUpdateDTO channelUpdateDTO) {
         ProfileEntity profile = getProfileById(SpringSecurityUtil.getCurrentProfileId());
-        AttachEntity photo = getAttachById(channelUpdateDTO.getPhotoId());
-        AttachEntity banner = getAttachById(channelUpdateDTO.getBannerId());
         ChannelEntity channel = getChannelById(channelUpdateDTO.getId());
 
-        if (!(channel.getProfileId().equals((profile.getId()).toString()))) {
+        if (!(channel.getProfileId().equals(profile.getId()))) {
             throw new AppBadException("This not your channel");
         }
+        AttachEntity photo = getAttachById(channelUpdateDTO.getPhotoId());
+        AttachEntity banner = getAttachById(channelUpdateDTO.getBannerId());
+
+
 
         if (!(channel.getName().equals(channelUpdateDTO.getName()))) {
             ChannelEntity channelEntity = getChannelByName(channelUpdateDTO.getName());
@@ -122,19 +121,24 @@ public class ChannelService {
                 channelEntity.getCreatedDate()
         );
     }
-    public ChannelInfoDTO changeChannelStatusAdmin(String id){
-        ChannelEntity channelEntity =getJustChannelById(id);
-        if(channelEntity.getStatus().equals(GeneralStatusEnum.BLOCKED)){
-            throw new ChannelException("Channel id already blocked");
+    public ChannelInfoDTO changeChannelStatusByAdmin(ChangeChannelStatusDTO dto){
+        ChannelEntity channelEntity =getJustChannelById(dto.getChannelId());
+        if(dto.getStatus().equals(GeneralStatusEnum.BLOCKED) &&
+                channelEntity.getStatus().equals(GeneralStatusEnum.BLOCKED)){
+            return toDTO(channelEntity);
+        }else if(
+                dto.getStatus().equals(GeneralStatusEnum.ACTIVE) &&
+                        channelEntity.getStatus().equals(GeneralStatusEnum.ACTIVE)
+
+        ){
+            return toDTO(channelEntity);
         }
-        channelEntity.setStatus(GeneralStatusEnum.BLOCKED);
+        channelEntity.setStatus(dto.getStatus());
         channelRepository.save(channelEntity);
-
-
         return toDTO(channelEntity);
     }
     public List<ChannelInfoDTO>GetUsersChannelsById(Integer id){
-      List<ChannelEntity>  list= channelRepository.getChannelEntitiesByProfileId(id.toString());
+      List<ChannelEntity>  list= channelRepository.getChannelEntitiesByProfileId(id);
         List<ChannelInfoDTO> dtoList = list.stream()
                 .map(e -> toDTO(e))
                 .toList();
@@ -142,19 +146,7 @@ public class ChannelService {
     }
 
     private ChannelInfoDTO toDTO(ChannelEntity e) {
-        if(e.getStatus().equals(GeneralStatusEnum.BLOCKED)){
 
-            return new ChannelInfoDTO(
-                    e.getId(),
-                    e.getName(),
-                    e.getDescription(),
-                    e.getProfileId(),
-                    e.getBannerId(),
-                    e.getPhotoId(),
-                    e.getCreatedDate(),
-                    e.getStatus()
-            );
-        }
         return new ChannelInfoDTO(
                 e.getId(),
                 e.getName(),
@@ -162,7 +154,8 @@ public class ChannelService {
                 e.getProfileId(),
                 e.getBannerId(),
                 e.getPhotoId(),
-                e.getCreatedDate()
+                e.getCreatedDate(),
+                e.getStatus()
         );
     }
     private ChannelEntity getChannelById(String id) {
@@ -208,6 +201,20 @@ public class ChannelService {
         });
         return isExist;
 
+
+    }
+    private ChannelResponseDTO toResponseDTO(ChannelEntity requestDTO){
+
+        return new ChannelResponseDTO(
+                requestDTO.getId(),
+                requestDTO.getName(),
+                requestDTO.getDescription(),
+                requestDTO.getProfileId(),
+                requestDTO.getBannerId(),
+                requestDTO.getPhotoId(),
+                requestDTO.getCreatedDate(),
+                requestDTO.getStatus()
+                );
 
     }
 

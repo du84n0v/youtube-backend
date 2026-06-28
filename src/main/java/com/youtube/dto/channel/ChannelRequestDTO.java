@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ChannelDTO {
+public class ChannelRequestDTO {
 
-    private String id;
 
     @NotBlank(message = "Ism bo‘sh bo‘lmasligi kerak")
     private String name;

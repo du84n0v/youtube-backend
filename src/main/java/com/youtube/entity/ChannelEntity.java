@@ -42,7 +42,7 @@ public class ChannelEntity {
     @Column(name = "profile_id")
     private Integer profileId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
+    @JoinColumn(name = "profile_id", insertable = false, updatable = false)
     private ProfileEntity owner;
 
     @CreationTimestamp

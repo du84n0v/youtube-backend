@@ -1,0 +1,32 @@
+###create
+POST localhost:8080/api/v1/channel/create
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNjQyNzg5LCJleHAiOjE3ODI3MjkxODl9._sLMl7WRkEC73NgYPlAkCXGakaBoewsdT9s7CkejDP7j6yfn9lsHzNrGBlYENIUO
+
+{
+  "name": "T-series",
+  "bannerId": "5eb99f44-1d26-4fc6-a21f-67af9bed1635.png",
+  "photoId": "5eb99f44-1d26-4fc6-a21f-67af9bed1635.png",
+  "description": "Music can change the world\". T-Series is India's largest Music Label & Movie Studio, believes in bringing world close together through its music.\n\nFor over thirty years, we’ve been more than a label. We’ve been listeners archeologists of emotion, digging in every corner of India, collecting stories and music in all forms told in all Indian languages.\n\nAnd we believe that the language of the heart doesn’t need translation. It only needs a stage. So this is our stage. Yours and ours.\n\nAll music lovers who believe in the magic of music, come. Join us. Live the magic with T-Series."
+}
+###update
+PUT localhost:8080/api/v1/channel/update
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNjQyNzg5LCJleHAiOjE3ODI3MjkxODl9._sLMl7WRkEC73NgYPlAkCXGakaBoewsdT9s7CkejDP7j6yfn9lsHzNrGBlYENIUO
+
+{
+  "id": "cdbc494b-73e0-440c-950f-d128dbdf8aa2",
+  "name": "Kun_uz",
+  "description": "KUN.UZ yangiliklar saytining Youtube`dagi rasmiy kanaliga xush kelibsiz!\n\nRasmiy vebsayt: https://kun.uz\nTelegram kanalimiz: https://telegram.me/kunuzofficial\nFacebook`da kuzating: https://www.facebook.com/kunuznews\nTwitter`da kuzating: https://twitter.com/KunUzNews\nInstagram`da kuzating: https://www.instagram.com/kun.uz",
+  "photoId": "7c975e69-3562-4a14-a450-78834d3a5d42.jpg",
+  "bannerId": "7c975e69-3562-4a14-a450-78834d3a5d42.jpg"
+
+}
+
+
+
+#### Pagination
+GET localhost:8080/api/v1/channel/get/list/admin?page=1&size=10
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNjQyNzg5LCJleHAiOjE3ODI3MjkxODl9._sLMl7WRkEC73NgYPlAkCXGakaBoewsdT9s7CkejDP7j6yfn9lsHzNrGBlYENIUO
+
+
