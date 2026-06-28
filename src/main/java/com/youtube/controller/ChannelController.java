@@ -38,26 +38,22 @@ public class ChannelController {
         return ResponseEntity.ok(channelService.pagination(PageUtil.page(page), size));
     }
 
-    @GetMapping("/get/channel/info/by/id/{id}")
-    public ResponseEntity<ChannelInfoDTO> getAll(
-            @PathVariable String id
-    ) {
-
-        return ResponseEntity.ok(channelService.getChannelInfoById(id));
-    }
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/change/channel/info/by/id/{id}/admin")
+    @PutMapping("/change/status/by/id/admin")
     public ResponseEntity<ChannelInfoDTO> changeStatus(
             @RequestBody ChangeChannelStatusDTO dto
             ) {
         return ResponseEntity.ok(channelService.changeChannelStatusByAdmin(dto));
     }
 
-    @GetMapping("/get/user/channels/by/id")
-    public ResponseEntity<List<ChannelInfoDTO>> getUserChannelsById(
-            @PathVariable Integer id
-    ) {
-        return ResponseEntity.ok(channelService.GetUsersChannelsById(id));
+    @GetMapping("/get/list/owner")
+    public ResponseEntity<List<ChannelInfoDTO>> getUserChannelsById() {
+        return ResponseEntity.ok(channelService.GetUsersChannelsById());
+    }
+
+    @GetMapping("/get/by/id/{id}")
+    public ResponseEntity<ChannelResponseDTO> getChannelById(@PathVariable String id){
+     return ResponseEntity.ok(channelService.getChannelById(id));
     }
 
 }

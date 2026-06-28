@@ -66,10 +66,9 @@ public class ChannelService {
 
 
     }
-
     public ChannelUpdateDTO update(ChannelUpdateDTO channelUpdateDTO) {
         ProfileEntity profile = getProfileById(SpringSecurityUtil.getCurrentProfileId());
-        ChannelEntity channel = getChannelById(channelUpdateDTO.getId());
+        ChannelEntity channel = getChannelByItsId(channelUpdateDTO.getId());
 
         if (!(channel.getProfileId().equals(profile.getId()))) {
             throw new AppBadException("This not your channel");
@@ -98,7 +97,6 @@ public class ChannelService {
         return channelUpdateDTO;
 
     }
-
     public Page<ChannelInfoDTO> pagination(int page, int size) {
         Pageable pageable = PageRequest.of(PageUtil.page(page), size);
         Page<ChannelEntity> entities = channelRepository.pagination(pageable);
@@ -109,20 +107,6 @@ public class ChannelService {
         List<ChannelInfoDTO> dtos = new LinkedList<>();
         entityList.forEach(e -> dtos.add(toDTO(e)));
         return new PageImpl<>(dtos, pageable, totalElement);
-    }
-
-    public ChannelInfoDTO getChannelInfoById(String id){
-        ChannelEntity channelEntity= getChannelById(id);
-
-
-        return new ChannelInfoDTO(
-                channelEntity.getId(),
-                channelEntity.getName(),
-                channelEntity.getDescription(),
-                channelEntity.getBannerId(),
-                channelEntity.getPhotoId(),
-                channelEntity.getCreatedDate()
-        );
     }
     public ChannelInfoDTO changeChannelStatusByAdmin(ChangeChannelStatusDTO dto){
         ChannelEntity channelEntity =getJustChannelById(dto.getChannelId());
@@ -140,14 +124,19 @@ public class ChannelService {
         channelRepository.save(channelEntity);
         return toDTO(channelEntity);
     }
-
-    public List<ChannelInfoDTO>GetUsersChannelsById(Integer id){
-      List<ChannelEntity>  list= channelRepository.getChannelEntitiesByProfileId(id);
+    public List<ChannelInfoDTO>GetUsersChannelsById(){
+      Integer id=SpringSecurityUtil.getCurrentProfileId();
+        List<ChannelEntity>  list= channelRepository.getChannelEntitiesByProfileId(id);
         List<ChannelInfoDTO> dtoList = list.stream()
                 .map(e -> toDTO(e))
                 .toList();
         return dtoList;
     }
+    public ChannelResponseDTO getChannelById(String id){
+        ChannelEntity channelEntity= getChannelByItsId(id);
+        return toResponseDTO(channelEntity);
+    }
+
     private ChannelInfoDTO toDTO(ChannelEntity e) {
 
         return new ChannelInfoDTO(
@@ -161,8 +150,7 @@ public class ChannelService {
                 e.getStatus()
         );
     }
-
-    private ChannelEntity getChannelById(String id) {
+    private ChannelEntity getChannelByItsId(String id) {
         ChannelEntity isExist = channelRepository.findByIdAndStatusIsActive(id).orElseThrow(() -> {
             throw new AppBadException("Channel not found");
 
@@ -171,23 +159,16 @@ public class ChannelService {
 
 
     }
-
     private ChannelEntity getJustChannelById(String id) {
-        ChannelEntity isExist = channelRepository.findById(id).orElseThrow(() -> {
+        return channelRepository.findById(id).orElseThrow(() -> {
             throw new AppBadException("Channel not found");
-
         });
-        return isExist;
-
-
     }
-
     private ChannelEntity getChannelByName(String id) {
         return channelRepository.findByName(id).orElse(null);
 
 
     }
-
     private AttachEntity getAttachById(String photoId) {
         AttachEntity isExist = attachRepository.findById(photoId).orElseThrow(() -> {
             throw new AppBadException("Attach not found");
@@ -197,7 +178,6 @@ public class ChannelService {
 
 
     }
-
     private ProfileEntity getProfileById(Integer id) {
         ProfileEntity isExist = profileRepository.findByIdAndStatusIsActive(id).orElseThrow(() -> {
             throw new AppBadException("Profile not found");
