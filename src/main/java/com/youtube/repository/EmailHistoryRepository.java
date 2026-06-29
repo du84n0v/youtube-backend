@@ -1,10 +1,13 @@
 package com.youtube.repository;
 
 import com.youtube.entity.EmailHistoryEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public interface EmailHistoryRepository extends CrudRepository<EmailHistoryEntity, Integer> {
 
@@ -13,4 +16,6 @@ public interface EmailHistoryRepository extends CrudRepository<EmailHistoryEntit
     int countByToEmailAfter(String toAccount, LocalDateTime from);
 
     EmailHistoryEntity findTopByToEmailOrderByCreatedDateDesc(String email);
+
+    Page<EmailHistoryEntity> findAll(Pageable pageable);
 }
