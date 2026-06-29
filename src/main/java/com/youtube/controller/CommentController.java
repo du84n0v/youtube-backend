@@ -1,6 +1,7 @@
 package com.youtube.controller;
 
 import com.youtube.dto.comment.request.CommentReqDto;
+import com.youtube.dto.comment.response.CommentInfoResDto;
 import com.youtube.dto.comment.response.CommentResDto;
 import com.youtube.service.CommentService;
 import com.youtube.util.PageUtil;
@@ -50,5 +51,10 @@ public class CommentController {
     @GetMapping("/list")
     public ResponseEntity<List<CommentResDto>> listByCurrentProfile() {
         return ResponseEntity.ok(commentService.listByCurrentProfile());
+    }
+
+    @GetMapping("/list/replies/{commentId}")
+    public ResponseEntity<List<CommentInfoResDto>> replyListById(@PathVariable Integer commentId) {
+        return ResponseEntity.ok(commentService.replyListById(commentId));
     }
 }

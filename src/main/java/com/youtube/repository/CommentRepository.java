@@ -20,4 +20,11 @@ public interface CommentRepository extends CrudRepository<CommentEntity, Integer
 
     @Query("FROM CommentEntity WHERE profileId =:profileId AND visible IS TRUE ")
     Optional<List<CommentEntity>> findByProfileIdAndVisibleTrue(Integer profileId);
+
+    @Query("SELECT c1 FROM CommentEntity AS c1 " +
+            "WHERE c1.id = (" +
+            "SELECT c2.replyId FROM CommentEntity AS c2 " +
+            "WHERE c2.id=:commentId " +
+            "AND c2.visible IS TRUE) ")
+    Optional<List<CommentEntity>> getRepliesById(Integer commentId);
 }
