@@ -24,7 +24,8 @@ public interface SubscriptionRepository extends CrudRepository<SubscriptionEntit
 
     @Query(
             "SELECT s.id AS id, s.notification AS type, " +
-                    "c.id AS channelId, c.name AS channnelName, c.photoId AS channelPhotoid" +
+                    "c.id AS channelId, c.name AS channnelName, c.photoId AS channelPhotoid, " +
+                    " s.subscribeDate AS createdDate " +
                     " FROM SubscriptionEntity s " +
                     " INNER JOIN s.channel c " +
                     " WHERE s.profileId = ?1 AND s.status = ?2 "

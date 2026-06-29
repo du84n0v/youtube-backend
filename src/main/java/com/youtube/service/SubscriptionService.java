@@ -95,4 +95,30 @@ public class SubscriptionService {
 
         return response;
     }
+
+    public List<SubscriptionInfoDTO> getprofileSubscriptionList(Integer profileId) {
+        List<SubscriptionInfoMapper> result = subscriptionRepository.getAllByProfileIdAndStatus(profileId, GeneralStatusEnum.ACTIVE);
+
+        if(result.isEmpty()){
+            throw new ItemNotFoundException("Profile does not have any subs");
+        }
+
+        List<SubscriptionInfoDTO> response = new ArrayList<>();
+        for (SubscriptionInfoMapper mapper : result) {
+            SubscriptionInfoDTO dto = new SubscriptionInfoDTO();
+            dto.setId(mapper.getId());
+            dto.setType(mapper.getType());
+            dto.setCreatedDate(mapper.getCreatedDate());
+            dto.setChannel(new ChannelShortInfoDTO(
+                    mapper.getChannelId(),
+                    mapper.getChannelName(),
+                    attachService.openURL(mapper.getChannelPhotoId())
+            ));
+
+
+            response.add(dto);
+        }
+
+        return response;
+    }
 }
