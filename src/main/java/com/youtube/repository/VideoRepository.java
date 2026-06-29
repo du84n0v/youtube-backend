@@ -2,6 +2,7 @@ package com.youtube.repository;
 
 import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
+import com.youtube.mapper.VideoFullInfoMapper;
 import com.youtube.mapper.VideoShortInfoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -51,4 +52,15 @@ public interface VideoRepository extends CrudRepository<VideoEntity, String> {
             " INNER JOIN v.channel c " +
             " WHERE vt.tagId = ?1 AND v.publishedDate IS NOT NULL ")
     Page<VideoShortInfoMapper> getVideosByTag(Integer tagId, Pageable pageable);
+
+    @Query(
+            "SELECT v.id AS id, v.title AS title, v.description as description," +
+                    " v.viewCount AS viewCount, v.sharedCount AS sharedCount, " +
+                    " v.likeCount AS likeCount, v.dislikeCount AS dislikeCount, " +
+                    " v.previewPhoto AS preview, v.attach AS video," +
+                    " v.category AS catgory, v.channel AS channel" +
+                    " FROM VideoEntity v " +
+                    " WHERE (v.id = ?1 AND " +
+                    " ((v.status = 'PRIVATE' AND v.channel.profileId = ?2) OR v.status = 'PUBLIC' ))")
+    VideoFullInfoMapper getByIdWithFull(String videoId, Integer profileId);
 }

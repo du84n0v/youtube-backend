@@ -58,6 +58,11 @@ public class VideoController {
         return ResponseEntity.ok(videoService.getVideosByTag(tagId, page-1, size));
     }
 
+    @GetMapping("/by-id/{videoId}")
+    public ResponseEntity<VideoFullInfoDTO> getById(@PathVariable String videoId){
+        return ResponseEntity.ok(videoService.getById(videoId));
+    }
+
 
 }
 

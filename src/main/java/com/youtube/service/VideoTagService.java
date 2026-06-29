@@ -31,16 +31,16 @@ public class VideoTagService {
     @Autowired
     private VideoRepository videoRepository;
 
-    public String addTagToVideo(VideoTagDTO dto ) {
+    public String addTagToVideo(VideoTagDTO dto) {
         VideoEntity video = videoRepository.findById(dto.getVideoId())
-                .orElseThrow(()-> new AppBadException("Video not found!"));
+                .orElseThrow(() -> new AppBadException("Video not found!"));
 
         checkOwner(video, SpringSecurityUtil.getCurrentProfileId());
 
         TagEntity tag = tagRepository.findById(dto.getTagId())
-                .orElseThrow(()-> new AppBadException("Tag not found!"));
+                .orElseThrow(() -> new AppBadException("Tag not found!"));
 
-        if (videoTagRepository.existsByVideoIdAndTagId(dto.getVideoId(),dto.getTagId())) {
+        if (videoTagRepository.existsByVideoIdAndTagId(dto.getVideoId(), dto.getTagId())) {
             throw new AppBadException("Video tag already exists!");
 
         }
@@ -59,7 +59,7 @@ public class VideoTagService {
         checkOwner(video, SpringSecurityUtil.getCurrentProfileId());
 
         Optional<VideoTagEntity> optional = videoTagRepository.findByVideoIdAndTagId(dto.getVideoId(), dto.getTagId());
-        if(optional.isEmpty()){
+        if (optional.isEmpty()) {
             throw new ItemNotFoundException("Video tag not found");
         }
 
@@ -68,35 +68,40 @@ public class VideoTagService {
         return "Successfully deleted";
     }
 
-   public List<VideoTagFullInfoDTO> getTagListByVideoId(String videoId) {
-        videoRepository.findById(videoId).orElseThrow(()-> new AppBadException("video not found!"));
+    public List<VideoTagFullInfoDTO> getTagListByVideoId(String videoId) {
+        videoRepository.findById(videoId).orElseThrow(() -> new AppBadException("video not found!"));
 
         List<VideoTagEntity> videoTags = videoTagRepository.findAllByVideoId(videoId);
 
         List<VideoTagFullInfoDTO> response = new ArrayList<>();
-       for (VideoTagEntity videoTag : videoTags) {
-           VideoTagFullInfoDTO dto = new VideoTagFullInfoDTO();
-           dto.setId(videoTag.getId());
-           dto.setVideoId(videoTag.getVideoId());
-           dto.setCreatedDate(videoTag.getCreatedDate());
-           dto.setTagInfo(new TagResponseDto(videoTag.getTagId(), videoTag.getTag().getName(), null));
+        for (VideoTagEntity videoTag : videoTags) {
+            VideoTagFullInfoDTO dto = new VideoTagFullInfoDTO();
+            dto.setId(videoTag.getId());
+            dto.setVideoId(videoTag.getVideoId());
+            dto.setCreatedDate(videoTag.getCreatedDate());
+            dto.setTagInfo(new TagResponseDto(videoTag.getTagId(), videoTag.getTag().getName(), null));
 
-           response.add(dto);
-       }
+            response.add(dto);
+        }
 
-       return response;
-   }
+        return response;
+    }
 
-    private void checkOwner(VideoEntity videoEntity , Integer currentProfileId) {
+    private void checkOwner(VideoEntity videoEntity, Integer currentProfileId) {
         ChannelEntity channel = videoEntity.getChannel();
 
-        if (channel==null) {
+        if (channel == null) {
             throw new AppBadException("Channel not found!");
         }
-        if(!channel.getProfileId().equals(currentProfileId)) {
+        if (!channel.getProfileId().equals(currentProfileId)) {
             throw new AppBadException("You are not owner of this video!");
         }
     }
 
-
+    public List<TagResponseDto> geTagsByVideoId(String videoId) {
+        return videoTagRepository.getVideoTagEntitiesByVideoId(videoId)
+                .stream()
+                .map(vt -> new TagResponseDto(vt.getTagId(), vt.getTag().getName(), null))
+                .toList();
+    }
 }
