@@ -1,8 +1,7 @@
 package com.youtube.service;
 
 import com.youtube.dto.comment.request.CommentReqDto;
-import com.youtube.dto.comment.response.CommentCustomVideoInfoResDto;
-import com.youtube.dto.comment.response.CommentResDto;
+import com.youtube.dto.comment.response.*;
 import com.youtube.entity.CommentEntity;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -146,4 +144,50 @@ public class CommentService {
     }
 
 
+    public List<CommentInfoResDto> replyListById(Integer commentId) {
+        Optional<List<CommentEntity>> optional = commentRepository.getRepliesById(commentId);
+        if (optional.isEmpty()) {
+            throw new ItemNotFoundException("Comment not found");
+        }
+        List<CommentInfoResDto> response = new LinkedList<>();
+
+        List<CommentEntity> entities = optional.get();
+        entities.forEach(entity -> {
+            response.add(toCommentInfoDto(entity));
+        });
+
+        return response;
+    }
+
+    public CommentInfoResDto toCommentInfoDto(CommentEntity entity) {
+        CommentInfoResDto response = new CommentInfoResDto();
+        response.setId(entity.getId());
+        response.setCreatedDate(entity.getCreatedDate());
+        response.setContent(entity.getContent());
+        response.setLikeCount(entity.getLikeCount());
+        response.setDislikeCount(entity.getDislikeCount());
+
+        // SET PROFILE FOR RESPONSE MAIN DTO
+        response.setProfile(toProfileInfoDto(entity));
+
+        return response;
+    }
+
+    public CommentCustomProfileResDto toProfileInfoDto(CommentEntity entity) {
+        CommentCustomProfileResDto profile = new CommentCustomProfileResDto();
+        profile.setId(entity.getProfileId());
+        profile.setName(entity.getProfile().getName());
+        profile.setSurname(entity.getProfile().getSurname());
+
+        // SET PHOTO DTO
+        CommentCustomPhotoResDto photo = new CommentCustomPhotoResDto();
+        photo.setId(entity.getProfile().getPhotoId());
+        photo.setUrl(entity.getProfile().getPhoto().getPath());
+
+
+        // SET PHOTO FOR PROFILE DTO
+        profile.setPhoto(photo);
+
+        return profile;
+    }
 }
