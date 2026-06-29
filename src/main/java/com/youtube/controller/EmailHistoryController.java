@@ -1,6 +1,7 @@
 package com.youtube.controller;
 
 import com.youtube.dto.emailhistory.EmailHistoryDTO;
+import com.youtube.dto.emailhistory.EmailHistoryFilterDTO;
 import com.youtube.service.EmailHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,15 +19,24 @@ public class EmailHistoryController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<EmailHistoryDTO>> getList(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                         @RequestParam(name = "size", defaultValue = "20") Integer size){
-        return ResponseEntity.ok(historyService.getList(page-1, size));
+                                                         @RequestParam(name = "size", defaultValue = "20") Integer size) {
+        return ResponseEntity.ok(historyService.getList(page - 1, size));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/by-email")
     public ResponseEntity<Page<EmailHistoryDTO>> getProfileHistory(@RequestParam("email") String email,
                                                                    @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                                                   @RequestParam(name = "size", defaultValue = "20") Integer size){
-        return ResponseEntity.ok(historyService.getProfileHistory(email, page-1, size));
+                                                                   @RequestParam(name = "size", defaultValue = "20") Integer size) {
+        return ResponseEntity.ok(historyService.getProfileHistory(email, page - 1, size));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/filter")
+    public ResponseEntity<Page<EmailHistoryDTO>> filter(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                        @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                        @RequestBody EmailHistoryFilterDTO dto) {
+        return ResponseEntity.ok(historyService.filter(dto, page - 1, size));
+    }
+
 }
