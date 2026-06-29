@@ -1,4 +1,4 @@
-package com.youtube.mapper;
+package com.youtube.mapper.video;
 
 import com.youtube.entity.AttachEntity;
 import com.youtube.entity.ChannelEntity;

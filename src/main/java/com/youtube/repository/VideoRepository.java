@@ -2,10 +2,10 @@ package com.youtube.repository;
 
 import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
-import com.youtube.mapper.VideoAdminShortInfoMapper;
-import com.youtube.mapper.VideoFullInfoMapper;
-import com.youtube.mapper.VideoPlaylistInfoMapper;
-import com.youtube.mapper.VideoShortInfoMapper;
+import com.youtube.mapper.video.VideoAdminShortInfoMapper;
+import com.youtube.mapper.video.VideoFullInfoMapper;
+import com.youtube.mapper.video.VideoPlaylistInfoMapper;
+import com.youtube.mapper.video.VideoShortInfoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;

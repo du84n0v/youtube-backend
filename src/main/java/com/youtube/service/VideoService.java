@@ -3,7 +3,6 @@ package com.youtube.service;
 import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.dto.channel.ChannelShortInfoDTO;
 import com.youtube.dto.playlist.response.PlaylistShortDTO;
-import com.youtube.dto.playlist.response.PlaylistShortInfoDto;
 import com.youtube.dto.profile.ProfileShortInfoDTO;
 import com.youtube.dto.video.*;
 import com.youtube.dto.videolike.LikeFullDTO;
@@ -12,10 +11,10 @@ import com.youtube.enums.EmotionEnum;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
-import com.youtube.mapper.VideoAdminShortInfoMapper;
-import com.youtube.mapper.VideoFullInfoMapper;
-import com.youtube.mapper.VideoPlaylistInfoMapper;
-import com.youtube.mapper.VideoShortInfoMapper;
+import com.youtube.mapper.video.VideoAdminShortInfoMapper;
+import com.youtube.mapper.video.VideoFullInfoMapper;
+import com.youtube.mapper.video.VideoPlaylistInfoMapper;
+import com.youtube.mapper.video.VideoShortInfoMapper;
 import com.youtube.repository.VideoRepository;
 import com.youtube.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
