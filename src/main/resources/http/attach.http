@@ -3,9 +3,9 @@ POST http://localhost:8080/api/v1/attach/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="Kun.uz.jpg"
+Content-Disposition: form-data; name="file"; filename="azamat.jpg"
 
-< C:\Users\User\Desktop\brain projects\demo (2)\youtube-backend\attaches\2026\6\28\Kun.uz.jpg
+< C:\Users\User\Desktop\brain projects\demo (2)\youtube-backend\attaches/azamat.jpg
 
 
 ### Open
