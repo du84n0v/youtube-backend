@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SubscriptionCreateDTO {
+public class SubscriptionDTO {
     @NotNull(message = "Channel ID is required")
     private String channelId;
 
-    private NotificationTypeEnum type = NotificationTypeEnum.ALL;
+    private NotificationTypeEnum type;
 }

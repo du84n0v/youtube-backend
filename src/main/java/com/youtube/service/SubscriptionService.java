@@ -1,8 +1,9 @@
 package com.youtube.service;
 
-import com.youtube.dto.subscription.SubscriptionCreateDTO;
+import com.youtube.dto.subscription.SubscriptionDTO;
 import com.youtube.entity.SubscriptionEntity;
 import com.youtube.enums.GeneralStatusEnum;
+import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.ChannelRepository;
 import com.youtube.repository.SubscriptionRepository;
@@ -20,32 +21,29 @@ public class SubscriptionService {
     @Autowired
     private ChannelRepository channelRepository;
 
-    public String create(SubscriptionCreateDTO dto) {
+    public String create(SubscriptionDTO dto) {
         Integer currentProfileId = SpringSecurityUtil.getCurrentProfileId();
-        if(!channelRepository.existsByIdAndVisibleTrue(dto.getChannelId())){
+        if (channelRepository.existsByIdAndVisibleTrue(dto.getChannelId(), Boolean.TRUE)) {
             throw new ItemNotFoundException("Channel not found");
         }
 
         SubscriptionEntity subscription = subscriptionRepository.getByProfileIdAndChannelId(currentProfileId, dto.getChannelId());
 
-        if(subscription == null){
+        if (subscription == null) {
             subscription = new SubscriptionEntity();
             subscription.setProfileId(currentProfileId);
             subscription.setChannelId(dto.getChannelId());
             subscription.setStatus(GeneralStatusEnum.ACTIVE);
             subscription.setNotification(dto.getType());
             subscription.setSubscribeDate(LocalDateTime.now());
-        }
-        else {
-            if(subscription.getUnsubscribeDate() == null){
+        } else {
+            if (subscription.getUnsubscribeDate() == null) {
                 subscription.setUnsubscribeDate(LocalDateTime.now());
-            }
-            else {
-                if(subscription.getSubscribeDate().isBefore(subscription.getUnsubscribeDate())){
+            } else {
+                if (subscription.getSubscribeDate().isBefore(subscription.getUnsubscribeDate())) {
                     subscription.setSubscribeDate(LocalDateTime.now());
                     subscription.setUnsubscribeDate(null);
-                }
-                else {
+                } else {
                     subscription.setUnsubscribeDate(LocalDateTime.now());
                 }
             }
@@ -54,5 +52,17 @@ public class SubscriptionService {
         subscriptionRepository.save(subscription);
 
         return "Done";
+    }
+
+    public String changeNotification(SubscriptionDTO dto) {
+        if (channelRepository.existsByIdAndVisibleTrue(dto.getChannelId(), Boolean.TRUE)) {
+            throw new ItemNotFoundException("Channel not found");
+        }
+
+        int effRow = subscriptionRepository.changeNotificationType(dto.getChannelId(), SpringSecurityUtil.getCurrentProfileId(), dto.getType());
+        if (effRow > 0) {
+            return "Success";
+        }
+        throw new AppBadException("Something went wrong");
     }
 }

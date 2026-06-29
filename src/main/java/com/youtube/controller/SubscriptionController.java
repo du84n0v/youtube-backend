@@ -1,14 +1,12 @@
 package com.youtube.controller;
 
-import com.youtube.dto.subscription.SubscriptionCreateDTO;
+import com.youtube.dto.subscription.SubscriptionDTO;
+import com.youtube.enums.NotificationTypeEnum;
 import com.youtube.service.SubscriptionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/subscription")
@@ -18,8 +16,14 @@ public class SubscriptionController {
     private SubscriptionService subscriptionService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody SubscriptionCreateDTO dto){
+    public ResponseEntity<String> create(@Valid @RequestBody SubscriptionDTO dto) {
+        dto.setType(NotificationTypeEnum.ALL);
         return ResponseEntity.ok(subscriptionService.create(dto));
+    }
+
+    @PutMapping("/change/notification")
+    public ResponseEntity<String> changeNotification(@Valid @RequestBody SubscriptionDTO dto) {
+        return ResponseEntity.ok(subscriptionService.changeNotification(dto));
     }
 
 }
