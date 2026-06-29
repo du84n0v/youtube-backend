@@ -2,12 +2,19 @@ package com.youtube.service;
 
 import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.dto.channel.ChannelShortInfoDTO;
+import com.youtube.dto.playlist.response.PlaylistShortDTO;
+import com.youtube.dto.profile.ProfileShortInfoDTO;
 import com.youtube.dto.video.*;
+import com.youtube.dto.videolike.LikeFullDTO;
 import com.youtube.entity.VideoEntity;
+import com.youtube.enums.EmotionEnum;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
-import com.youtube.mapper.VideoShortInfoMapper;
+import com.youtube.mapper.video.VideoAdminShortInfoMapper;
+import com.youtube.mapper.video.VideoFullInfoMapper;
+import com.youtube.mapper.video.VideoPlaylistInfoMapper;
+import com.youtube.mapper.video.VideoShortInfoMapper;
 import com.youtube.repository.VideoRepository;
 import com.youtube.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +36,10 @@ public class VideoService {
     private ChannelService channelService;
     @Autowired
     private AttachService attachService;
+    @Autowired
+    private VideoTagService videoTagService;
+    @Autowired
+    private VideoLikeService videoLikeService;
 
     public String create(VideoCreateDTO dto) {
         isProfileChannelOwner(dto.getChannelId());
@@ -161,5 +172,150 @@ public class VideoService {
                 .toList();
 
         return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    public Page<VideoShortInfoDTO> getVideosByTag(Integer tagId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<VideoShortInfoMapper> pages = videoRepository.getVideosByTag(tagId, pageable);
+
+        List<VideoShortInfoDTO> response = pages.stream()
+                .map(this::mapperToShortInfoDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    public VideoFullInfoDTO getById(String videoId) {
+        VideoFullInfoMapper mapper = videoRepository.getByIdWithFull(videoId, SpringSecurityUtil.getCurrentProfileId());
+        if(mapper == null){
+            throw new ItemNotFoundException("Video not found");
+        }
+        return mapperToFullInfoDto(mapper) ;
+    }
+
+    private VideoFullInfoDTO mapperToFullInfoDto(VideoFullInfoMapper mapper) {
+        VideoFullInfoDTO dto = new VideoFullInfoDTO();
+        dto.setId(mapper.getId());
+        dto.setTitle(mapper.getTitle());
+        dto.setDescription(mapper.getDescription());
+        dto.setViewCount(mapper.getViewCount());
+        dto.setSharedCount(mapper.getSharedCount());
+
+        dto.setTagList(videoTagService.geTagsByVideoId(mapper.getId()));
+
+        if(mapper.getPreview() != null){
+            dto.setPreview(new AttachShortInfoDTO(
+                    mapper.getPreview().getId(),
+                    attachService.openURL(mapper.getPreview().getId())
+            ));
+        }
+
+        if(mapper.getVideo() != null){
+           dto.setDuration(mapper.getVideo().getDuration());
+
+           dto.setVideo(new AttachShortInfoDTO(
+                   mapper.getVideo().getId(),
+                   attachService.openURL(mapper.getVideo().getId())
+           ));
+        }
+
+        if(mapper.getChannel() != null){
+            dto.setChannel(new ChannelShortInfoDTO(
+                    mapper.getChannel().getId(),
+                    mapper.getChannel().getName(),
+                    attachService.openURL(mapper.getChannel().getPhotoId())
+            ));
+        }
+
+        dto.setLikeInfo(new LikeFullDTO(
+                mapper.getLikeCount(),
+                mapper.getDislikeCount(),
+                videoLikeService.isUserLikedVideo(SpringSecurityUtil.getCurrentProfileId(), dto.getId(), EmotionEnum.LIKE),
+                videoLikeService.isUserLikedVideo(SpringSecurityUtil.getCurrentProfileId(), dto.getId(), EmotionEnum.DISLIKE)
+        ));
+
+        return dto;
+    }
+
+    public Page<VideoAdminShortInfoDTO> getList(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VideoAdminShortInfoMapper> pages = videoRepository.getList(pageable);
+
+        List<VideoAdminShortInfoDTO> response = pages.stream()
+                .map(this::adminMapperToDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    private VideoAdminShortInfoDTO adminMapperToDto(VideoAdminShortInfoMapper mapper) {
+        VideoShortInfoDTO vDto = new VideoShortInfoDTO();
+        vDto.setId(mapper.getId());
+        vDto.setTitle(mapper.getTitle());
+        vDto.setPublishedDate(mapper.getPublishedDate());
+        vDto.setDuration(mapper.getDuration());
+        vDto.setViewCount(mapper.getViewCount());
+
+        if (mapper.getPreview() != null) {
+            vDto.setPreview(new AttachShortInfoDTO(
+                    mapper.getPreview().getId(),
+                    attachService.openURL(mapper.getPreview().getId())
+            ));
+        }
+
+        if (mapper.getChannel() != null) {
+            vDto.setChannel(new ChannelShortInfoDTO(
+                    mapper.getChannel().getId(),
+                    mapper.getChannel().getName(),
+                    attachService.openURL(mapper.getChannel().getPhotoId())
+            ));
+        }
+
+        ProfileShortInfoDTO pDto = null;
+        if (mapper.getProfileId() != null) {
+            pDto = new ProfileShortInfoDTO();
+            pDto.setId(mapper.getProfileId());
+            pDto.setName(mapper.getProfileName());
+            pDto.setSurname(mapper.getProfileSurname());
+        }
+
+        PlaylistShortDTO plDto = null;
+        if (mapper.getPlaylistId() != null) {
+            plDto = new PlaylistShortDTO();
+            plDto.setId(mapper.getPlaylistId());
+            plDto.setName(mapper.getPlaylistName());
+        }
+
+        return new VideoAdminShortInfoDTO(vDto, pDto, plDto);
+    }
+
+    public Page<VideoPlaylistInfoDTO> getChannelVideos(String channelId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VideoPlaylistInfoMapper> pages = videoRepository.getChannelVideos(channelId, pageable);
+
+        List<VideoPlaylistInfoDTO> response = pages.stream()
+                .map(this::playlistMapperToDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    private VideoPlaylistInfoDTO playlistMapperToDto(VideoPlaylistInfoMapper mapper) {
+        VideoPlaylistInfoDTO dto = new VideoPlaylistInfoDTO();
+        dto.setId(mapper.getId());
+        dto.setTitle(mapper.getTitle());
+        dto.setViewCount(mapper.getViewCount());
+        dto.setPublishedDate(mapper.getPublishedDate());
+        dto.setDuration(mapper.getDuration());
+
+        if(mapper.getPreview() != null){
+            dto.setPreview(new AttachShortInfoDTO(
+                    mapper.getPreview().getId(),
+                    attachService.openURL(mapper.getPreview().getId())
+            ));
+        }
+
+        return dto;
     }
 }

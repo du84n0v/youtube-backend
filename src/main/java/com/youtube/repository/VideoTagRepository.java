@@ -13,4 +13,6 @@ public interface VideoTagRepository extends CrudRepository<VideoTagEntity, Integ
     List<VideoTagEntity> findAllByVideoId(String videoId);
 
     Optional<VideoTagEntity> findByVideoIdAndTagId(String videoId, Integer tagId);
+
+    List<VideoTagEntity> getVideoTagEntitiesByVideoId(String videoId);
 }

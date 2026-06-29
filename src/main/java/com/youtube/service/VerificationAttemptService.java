@@ -27,7 +27,7 @@ public class VerificationAttemptService {
         attempt.setLastAttempt(now);
         return attemptRepository.save(attempt);
     }
-    
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void resetAttempt(VerificationAttemptEntity attempt) {
         if (attempt != null) {
