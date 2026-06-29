@@ -5,7 +5,6 @@ import com.youtube.enums.GeneralStatusEnum;
 import com.youtube.enums.NotificationTypeEnum;
 import com.youtube.mapper.subscription.SubscriptionInfoMapper;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

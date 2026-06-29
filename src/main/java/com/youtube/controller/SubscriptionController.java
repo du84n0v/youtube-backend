@@ -4,7 +4,6 @@ import com.youtube.dto.subscription.SubscriptionDTO;
 import com.youtube.dto.subscription.SubscriptionInfoDTO;
 import com.youtube.enums.NotificationTypeEnum;
 import com.youtube.service.SubscriptionService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
