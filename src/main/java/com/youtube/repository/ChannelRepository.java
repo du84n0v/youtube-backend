@@ -2,6 +2,7 @@ package com.youtube.repository;
 
 
 import com.youtube.entity.ChannelEntity;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,5 @@ public interface ChannelRepository extends CrudRepository<ChannelEntity,String> 
     @Query("from ChannelEntity where id=:channelId and profileId=:prfile_id")
     ChannelEntity findByIdAndProfileId(@Param("channelId") String channelId,@Param("profile_id") Integer profile_id);
 
+    boolean existsByIdAndVisibleTrue(String channelId);
 }
