@@ -1,10 +1,13 @@
 package com.youtube.service;
 
+import com.youtube.dto.channel.ChannelShortInfoDTO;
 import com.youtube.dto.subscription.SubscriptionDTO;
+import com.youtube.dto.subscription.SubscriptionInfoDTO;
 import com.youtube.entity.SubscriptionEntity;
 import com.youtube.enums.GeneralStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
+import com.youtube.mapper.subscription.SubscriptionInfoMapper;
 import com.youtube.repository.ChannelRepository;
 import com.youtube.repository.SubscriptionRepository;
 import com.youtube.util.SpringSecurityUtil;
@@ -12,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SubscriptionService {
@@ -20,6 +25,8 @@ public class SubscriptionService {
     private SubscriptionRepository subscriptionRepository;
     @Autowired
     private ChannelRepository channelRepository;
+    @Autowired
+    private AttachService attachService;
 
     public String create(SubscriptionDTO dto) {
         Integer currentProfileId = SpringSecurityUtil.getCurrentProfileId();
@@ -64,5 +71,28 @@ public class SubscriptionService {
             return "Success";
         }
         throw new AppBadException("Something went wrong");
+    }
+
+    public List<SubscriptionInfoDTO> getProfileSubscriptionList() {
+        List<SubscriptionInfoMapper> res = subscriptionRepository.getAllByProfileIdAndStatus(SpringSecurityUtil.getCurrentProfileId(), GeneralStatusEnum.ACTIVE);
+        if (res.isEmpty()) {
+            throw new ItemNotFoundException("You do not have any subscription");
+        }
+
+        List<SubscriptionInfoDTO> response = new ArrayList<>();
+        for (SubscriptionInfoMapper mapper : res) {
+            SubscriptionInfoDTO dto = new SubscriptionInfoDTO();
+            dto.setId(mapper.getId());
+            dto.setType(mapper.getType());
+            dto.setChannel(new ChannelShortInfoDTO(
+                    mapper.getChannelId(),
+                    mapper.getChannelName(),
+                    attachService.openURL(mapper.getChannelPhotoId())
+            ));
+
+            response.add(dto);
+        }
+
+        return response;
     }
 }
