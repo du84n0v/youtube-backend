@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class EmailHistoryService {
@@ -58,5 +57,12 @@ public class EmailHistoryService {
         dto.setCreatedDate(entity.getCreatedDate());
 
         return dto;
+    }
+
+    public Page<EmailHistoryDTO> getProfileHistory(String email, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<EmailHistoryEntity> pages = historyRepository.getAllByToEmail(email, pageable);
+
+        return new PageImpl<>(pages.stream().map(this::entityToDto).toList(), pageable, pages.getTotalElements());
     }
 }

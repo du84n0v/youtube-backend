@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 public interface EmailHistoryRepository extends CrudRepository<EmailHistoryEntity, Integer> {
 
@@ -18,4 +17,6 @@ public interface EmailHistoryRepository extends CrudRepository<EmailHistoryEntit
     EmailHistoryEntity findTopByToEmailOrderByCreatedDateDesc(String email);
 
     Page<EmailHistoryEntity> findAll(Pageable pageable);
+
+    Page<EmailHistoryEntity> getAllByToEmail(String email, Pageable pageable);
 }

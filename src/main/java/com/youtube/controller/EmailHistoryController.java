@@ -21,4 +21,12 @@ public class EmailHistoryController {
                                                          @RequestParam(name = "size", defaultValue = "20") Integer size){
         return ResponseEntity.ok(historyService.getList(page-1, size));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/by-email")
+    public ResponseEntity<Page<EmailHistoryDTO>> getProfileHistory(@RequestParam("email") String email,
+                                                                   @RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                                   @RequestParam(name = "size", defaultValue = "20") Integer size){
+        return ResponseEntity.ok(historyService.getProfileHistory(email, page-1, size));
+    }
 }
