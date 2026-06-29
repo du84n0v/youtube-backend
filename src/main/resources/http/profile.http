@@ -40,10 +40,10 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsI
 ###update photo
 PUT localhost:8080/api/v1/profile/update/photo
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNzQxMTYyLCJleHAiOjE3ODI4Mjc1NjJ9.GZmJK1TNHsqQbJCnIDWhIC0nlE4U0047YcJNtZaKecksEWgoO60Lv3Ksl7xqQe0j
 
 {
-  "attachId": "askjdbfgfasdjkbggfasdfjkbgbadfsjkkgas.qw34895yr"
+  "attachId": "8fea3450-fdb4-4233-a548-ce9468b89298.jpg"
 }
 
 ###get profile

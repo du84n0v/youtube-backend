@@ -192,4 +192,20 @@ public class ProfileService {
 
         return "Successfully created";
     }
+
+    public ProfileInfoDTO toProfileInfoDTO(ProfileEntity profile){
+        ProfileInfoDTO profileInfoDTO= new ProfileInfoDTO();
+        profileInfoDTO.setId(profile.getId());
+        profileInfoDTO.setSurname(profile.getSurname());
+        profileInfoDTO.setName(profile.getName());
+        profileInfoDTO.setPhoto_id(profile.getPhotoId());
+        profileInfoDTO.setPhotoStringUrl(attachService.findById(profile.getPhotoId()).getPath());
+        return profileInfoDTO;
+    }
+
+    public ProfileEntity get(Integer id) {
+        return profileRepository.findByIdAndStatusIsActive(id).orElseThrow(() -> {
+            throw new AppBadException("Profile not found");
+        });
+    }
 }

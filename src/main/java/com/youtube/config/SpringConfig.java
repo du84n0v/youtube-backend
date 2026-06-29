@@ -56,6 +56,7 @@ public class SpringConfig {
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .requestMatchers("/api/v1/channel/get/list/admin").hasRole("ADMIN")
                 .requestMatchers("/api/v1/channel/change/status/by/id/admin").hasRole("ADMIN")
+                .requestMatchers("/api/v1/report/remove/id/{id}/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -1,0 +1,22 @@
+#### Create
+POST localhost:8080/api/v1/report/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNzQxMTYyLCJleHAiOjE3ODI4Mjc1NjJ9.GZmJK1TNHsqQbJCnIDWhIC0nlE4U0047YcJNtZaKecksEWgoO60Lv3Ksl7xqQe0j
+
+{
+  "content": "Not good man  !!!!",
+  "entityId": "5f239ee6-327d-46f9-87a1-52f4e0e4897c",
+  "videoType": "CHANNEL"
+}
+### Pagination
+GET localhost:8080/api/v1/report/pagination/admin?page=1&size=10
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNzQxMTYyLCJleHAiOjE3ODI4Mjc1NjJ9.GZmJK1TNHsqQbJCnIDWhIC0nlE4U0047YcJNtZaKecksEWgoO60Lv3Ksl7xqQe0j
+
+### Delete
+DELETE localhost:8080/api/v1/report/remove/id/4/admin
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3ODI3NTg1NjIsImV4cCI6MTc4Mjg0NDk2Mn0.nhHKkYltfaE1Pn4PdSl_kRjdkkm632xEBKtfPXWJYkF_CStlR2cQ28KUb_ltHtHP
+
+### Get user report list
+GET localhost:8080/api/v1/report/get/user/list/id/2/admin
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3ODI3NTg1NjIsImV4cCI6MTc4Mjg0NDk2Mn0.nhHKkYltfaE1Pn4PdSl_kRjdkkm632xEBKtfPXWJYkF_CStlR2cQ28KUb_ltHtHP
+

@@ -4,6 +4,7 @@ import com.youtube.dto.channel.*;
 import com.youtube.entity.AttachEntity;
 import com.youtube.entity.ChannelEntity;
 import com.youtube.entity.ProfileEntity;
+import com.youtube.entity.VideoEntity;
 import com.youtube.enums.GeneralStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ChannelWithSuchNameExistsException;
@@ -135,6 +136,11 @@ public class ChannelService {
     public ChannelResponseDTO getChannelById(String id){
         ChannelEntity channelEntity= getChannelByItsId(id);
         return toResponseDTO(channelEntity);
+    }
+    public ChannelEntity get(String id) {
+        return channelRepository.findByIdAndVisibleIsTrueAndStatusActive(id).orElseThrow(() -> {
+            throw new AppBadException("channel not found");
+        });
     }
 
     private ChannelInfoDTO toDTO(ChannelEntity e) {
