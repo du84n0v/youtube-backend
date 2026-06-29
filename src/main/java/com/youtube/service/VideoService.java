@@ -14,6 +14,7 @@ import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
 import com.youtube.mapper.VideoAdminShortInfoMapper;
 import com.youtube.mapper.VideoFullInfoMapper;
+import com.youtube.mapper.VideoPlaylistInfoMapper;
 import com.youtube.mapper.VideoShortInfoMapper;
 import com.youtube.repository.VideoRepository;
 import com.youtube.util.SpringSecurityUtil;
@@ -289,5 +290,34 @@ public class VideoService {
         }
 
         return new VideoAdminShortInfoDTO(vDto, pDto, plDto);
+    }
+
+    public Page<VideoPlaylistInfoDTO> getChannelVideos(String channelId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VideoPlaylistInfoMapper> pages = videoRepository.getChannelVideos(channelId, pageable);
+
+        List<VideoPlaylistInfoDTO> response = pages.stream()
+                .map(this::playlistMapperToDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    private VideoPlaylistInfoDTO playlistMapperToDto(VideoPlaylistInfoMapper mapper) {
+        VideoPlaylistInfoDTO dto = new VideoPlaylistInfoDTO();
+        dto.setId(mapper.getId());
+        dto.setTitle(mapper.getTitle());
+        dto.setViewCount(mapper.getViewCount());
+        dto.setPublishedDate(mapper.getPublishedDate());
+        dto.setDuration(mapper.getDuration());
+
+        if(mapper.getPreview() != null){
+            dto.setPreview(new AttachShortInfoDTO(
+                    mapper.getPreview().getId(),
+                    attachService.openURL(mapper.getPreview().getId())
+            ));
+        }
+
+        return dto;
     }
 }

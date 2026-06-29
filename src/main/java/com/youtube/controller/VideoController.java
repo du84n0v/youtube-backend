@@ -56,19 +56,26 @@ public class VideoController {
     public ResponseEntity<Page<VideoShortInfoDTO>> videosByTag(@RequestParam(name = "page", defaultValue = "1") Integer page,
                                                                @RequestParam(name = "size", defaultValue = "20") Integer size,
                                                                @PathVariable Integer tagId) {
-        return ResponseEntity.ok(videoService.getVideosByTag(tagId, page-1, size));
+        return ResponseEntity.ok(videoService.getVideosByTag(tagId, page - 1, size));
     }
 
     @GetMapping("/get/by-id/{videoId}")
-    public ResponseEntity<VideoFullInfoDTO> getById(@PathVariable String videoId){
+    public ResponseEntity<VideoFullInfoDTO> getById(@PathVariable String videoId) {
         return ResponseEntity.ok(videoService.getById(videoId));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("get/list")
     public ResponseEntity<Page<VideoAdminShortInfoDTO>> getList(@RequestParam(name = "page", defaultValue = "1") Integer page,
-                                     @RequestParam(name = "size", defaultValue = "20") Integer size){
-        return ResponseEntity.ok(videoService.getList(page-1, size));
+                                                                @RequestParam(name = "size", defaultValue = "20") Integer size) {
+        return ResponseEntity.ok(videoService.getList(page - 1, size));
+    }
+
+    @GetMapping("/get/channel-videos/{channelId}")
+    public ResponseEntity<Page<VideoPlaylistInfoDTO>> channelVideos(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                                                    @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                                                    @PathVariable String channelId) {
+        return ResponseEntity.ok(videoService.getChannelVideos(channelId, page-1, size));
     }
 
 

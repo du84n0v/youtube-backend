@@ -4,6 +4,7 @@ import com.youtube.entity.VideoEntity;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.mapper.VideoAdminShortInfoMapper;
 import com.youtube.mapper.VideoFullInfoMapper;
+import com.youtube.mapper.VideoPlaylistInfoMapper;
 import com.youtube.mapper.VideoShortInfoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -80,4 +81,15 @@ public interface VideoRepository extends CrudRepository<VideoEntity, String> {
                     " WHERE v.publishedDate IS NOT NULL "
     )
     Page<VideoAdminShortInfoMapper> getList(Pageable pageable);
+
+    @Query(
+            "SELECT v.id AS id, v.title AS title, v.viewCount AS viewCount, " +
+                    " v.publishedDate AS publishedDate, v.attach.duration AS duration," +
+                    " v.previewPhoto AS preview " +
+                    " FROM VideoEntity  v " +
+                    " LEFT JOIN v.previewPhoto p " +
+                    " WHERE v.channelId = ?1 AND v.publishedDate IS NOT NULL " +
+                    " ORDER BY v.createdDate DESC "
+    )
+    Page<VideoPlaylistInfoMapper> getChannelVideos(String channelId, Pageable pageable);
 }
