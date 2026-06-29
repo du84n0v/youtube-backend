@@ -7,6 +7,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -58,9 +59,16 @@ public class VideoController {
         return ResponseEntity.ok(videoService.getVideosByTag(tagId, page-1, size));
     }
 
-    @GetMapping("/by-id/{videoId}")
+    @GetMapping("/get/by-id/{videoId}")
     public ResponseEntity<VideoFullInfoDTO> getById(@PathVariable String videoId){
         return ResponseEntity.ok(videoService.getById(videoId));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("get/list")
+    public ResponseEntity<Page<VideoAdminShortInfoDTO>> getList(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(name = "size", defaultValue = "20") Integer size){
+        return ResponseEntity.ok(videoService.getList(page-1, size));
     }
 
 

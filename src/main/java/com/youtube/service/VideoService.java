@@ -2,6 +2,9 @@ package com.youtube.service;
 
 import com.youtube.dto.AttachShortInfoDTO;
 import com.youtube.dto.channel.ChannelShortInfoDTO;
+import com.youtube.dto.playlist.response.PlaylistShortDTO;
+import com.youtube.dto.playlist.response.PlaylistShortInfoDto;
+import com.youtube.dto.profile.ProfileShortInfoDTO;
 import com.youtube.dto.video.*;
 import com.youtube.dto.videolike.LikeFullDTO;
 import com.youtube.entity.VideoEntity;
@@ -9,6 +12,7 @@ import com.youtube.enums.EmotionEnum;
 import com.youtube.enums.VideoStatusEnum;
 import com.youtube.exception.AppBadException;
 import com.youtube.exception.ItemNotFoundException;
+import com.youtube.mapper.VideoAdminShortInfoMapper;
 import com.youtube.mapper.VideoFullInfoMapper;
 import com.youtube.mapper.VideoShortInfoMapper;
 import com.youtube.repository.VideoRepository;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -232,5 +237,57 @@ public class VideoService {
         ));
 
         return dto;
+    }
+
+    public Page<VideoAdminShortInfoDTO> getList(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VideoAdminShortInfoMapper> pages = videoRepository.getList(pageable);
+
+        List<VideoAdminShortInfoDTO> response = pages.stream()
+                .map(this::adminMapperToDto)
+                .toList();
+
+        return new PageImpl<>(response, pageable, pages.getTotalElements());
+    }
+
+    private VideoAdminShortInfoDTO adminMapperToDto(VideoAdminShortInfoMapper mapper) {
+        VideoShortInfoDTO vDto = new VideoShortInfoDTO();
+        vDto.setId(mapper.getId());
+        vDto.setTitle(mapper.getTitle());
+        vDto.setPublishedDate(mapper.getPublishedDate());
+        vDto.setDuration(mapper.getDuration());
+        vDto.setViewCount(mapper.getViewCount());
+
+        if (mapper.getPreview() != null) {
+            vDto.setPreview(new AttachShortInfoDTO(
+                    mapper.getPreview().getId(),
+                    attachService.openURL(mapper.getPreview().getId())
+            ));
+        }
+
+        if (mapper.getChannel() != null) {
+            vDto.setChannel(new ChannelShortInfoDTO(
+                    mapper.getChannel().getId(),
+                    mapper.getChannel().getName(),
+                    attachService.openURL(mapper.getChannel().getPhotoId())
+            ));
+        }
+
+        ProfileShortInfoDTO pDto = null;
+        if (mapper.getProfileId() != null) {
+            pDto = new ProfileShortInfoDTO();
+            pDto.setId(mapper.getProfileId());
+            pDto.setName(mapper.getProfileName());
+            pDto.setSurname(mapper.getProfileSurname());
+        }
+
+        PlaylistShortDTO plDto = null;
+        if (mapper.getPlaylistId() != null) {
+            plDto = new PlaylistShortDTO();
+            plDto.setId(mapper.getPlaylistId());
+            plDto.setName(mapper.getPlaylistName());
+        }
+
+        return new VideoAdminShortInfoDTO(vDto, pDto, plDto);
     }
 }
