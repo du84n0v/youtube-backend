@@ -48,10 +48,12 @@ public class CommentService {
 
         // SET VIDEO DTO
         CommentCustomVideoInfoResDto video = new CommentCustomVideoInfoResDto();
-        video.setId(entity.getVideoId());
-        video.setPreviewAttachId(entity.getVideo().getPreviewAttachId());
-        video.setTitle(entity.getVideo().getTitle());
-        video.setDuration(entity.getVideo().getAttach().getDuration());
+        if (entity.getVideo() != null) {
+            video.setId(entity.getVideoId());
+            video.setPreviewAttachId(entity.getVideo().getPreviewAttachId());
+            video.setTitle(entity.getVideo().getTitle());
+            video.setDuration(entity.getVideo().getAttach().getDuration());
+        }
 
         // SET VIDEO FOR COMMENT RESPONSE
         dto.setVideo(video);
@@ -99,7 +101,8 @@ public class CommentService {
 
 
     public PageImpl<CommentResDto> pagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdDate").descending());
+        int pageNumber = Math.max(page - 1, 0);
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by("createdDate").descending());
         Page<CommentEntity> result = commentRepository.findAllVisibleTrue(pageable);
 
         return toPagination(pageable, result);
@@ -181,8 +184,10 @@ public class CommentService {
 
         // SET PHOTO DTO
         CommentCustomPhotoResDto photo = new CommentCustomPhotoResDto();
-        photo.setId(entity.getProfile().getPhotoId());
-        photo.setUrl(entity.getProfile().getPhoto().getPath());
+        if (entity.getProfile().getPhoto() != null) {
+            photo.setId(entity.getProfile().getPhotoId());
+            photo.setUrl(entity.getProfile().getPhoto().getPath());
+        }
 
 
         // SET PHOTO FOR PROFILE DTO

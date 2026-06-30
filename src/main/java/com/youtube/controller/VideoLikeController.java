@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/video_like")
+@RequestMapping("/api/v1/video-like")
 public class VideoLikeController {
     @Autowired
     private VideoLikeService videoLikeService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<VideoLikeResDto> create(@RequestBody VideoLikeReqDto dto) {
         return ResponseEntity.ok(videoLikeService.create(dto));
     }
 
-    @DeleteMapping("/remove")
+    @DeleteMapping
     public ResponseEntity<Boolean> remove(@RequestBody VideoLikeReqDto dto) {
         return ResponseEntity.ok(videoLikeService.removeLike(dto));
     }
 
-    @GetMapping("/list/user-liked")
+    @GetMapping("/my")
     public ResponseEntity<List<VideoLikeInfoResDto>> userLikedList(){
         return ResponseEntity.ok(videoLikeService.userLikedList());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/list/user-liked/{profileId}")
+    @GetMapping("/profile/{profileId}")
     public ResponseEntity<List<VideoLikeInfoResDto>> userLikedList(@PathVariable Integer profileId){
         return ResponseEntity.ok(videoLikeService.userLikedListByPrId(profileId));
     }
