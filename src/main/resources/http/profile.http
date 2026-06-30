@@ -1,65 +1,65 @@
 ###change password
 PUT localhost:8080/api/v1/profile/update/password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyMzk5ODg2LCJleHAiOjE3ODI0ODYyODZ9.zIpb4ND8Y0fVzwuwcMBGcc4YtpcSgT2SC7mxOIDDHFQwCQRvB4kT8HrpOK935MFs
+Authorization: Bearer jwt
 
 {
-  "oldPassword": "54321",
-  "newPassword": "12345"
+  "oldPassword": "",
+  "newPassword": ""
 }
 
 ###update password
 POST localhost:8080/api/v1/profile/update/email
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyNDYyNTU0LCJleHAiOjE3ODI1NDg5NTR9.U2SFnlPzMkHJuYDynNJVWlYdTP1axXzEEPEkuN9zIT0ZD4vujpKBmspe9k2Mxy68
+Authorization: Bearer jwt
 
 {
-  "email": "sadriddindusanov@gmail.com"
+  "email": "forexample@gmail.com"
 }
 
 ###verify and update email
 PUT localhost:8080/api/v1/profile/update/email-verify
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Im9xbW9sMjRAZ21haWwuY29tIiwiaWF0IjoxNzgyNDYyNTU0LCJleHAiOjE3ODI1NDg5NTR9.U2SFnlPzMkHJuYDynNJVWlYdTP1axXzEEPEkuN9zIT0ZD4vujpKBmspe9k2Mxy68
+Authorization: Bearer jwt
 
 {
-  "email": "sadriddindusanov@gmail.com",
-  "code": "545292"
+  "email": "forexample@gmail.com",
+  "code": ""
 }
 
 ###update detail
 PUT localhost:8080/api/v1/profile/update/detail
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+Authorization: Bearer jwt
 
 {
-  "name": "Vali",
-  "surname": "Valiyev"
+  "name": "Test",
+  "surname": "Testov"
 }
 
 ###update photo
 PUT localhost:8080/api/v1/profile/update/photo
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6ImF6YW1hdHVybWFub3Y4MjJAZ21haWwuY29tIiwiaWF0IjoxNzgyNzQxMTYyLCJleHAiOjE3ODI4Mjc1NjJ9.GZmJK1TNHsqQbJCnIDWhIC0nlE4U0047YcJNtZaKecksEWgoO60Lv3Ksl7xqQe0j
+Authorization: Bearer jwt
 
 {
-  "attachId": "8fea3450-fdb4-4233-a548-ce9468b89298.jpg"
+  "attachId": "uuid.format"
 }
 
 ###get profile
-GET localhost:8080/api/v1/profile/profile-detail/1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+GET localhost:8080/api/v1/profile/profile-detail/{id}
+Authorization: Bearer jwt
 
 ###create
 POST localhost:8080/api/v1/profile/create-profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6InNhZHJpZGRpbmR1c2Fub3ZAZ21haWwuY29tIiwiaWF0IjoxNzgyNDg1NTk5LCJleHAiOjE3ODI1NzE5OTl9.J2jcKvAE1HoRA2cct-VoxZdDpI4mNk8Om2hnAAIhSLeZKPXKg7Wz-r5JwmiO-5-r
+Authorization: Bearer jwt
 
 {
   "name": "Admin",
   "surname": "Adminov",
-  "email": "admin@gmail.com",
-  "password": "00000",
+  "email": "forexample@gmail.com",
+  "password": "",
   "role": "ROLE_ADMIN"
 }
 
