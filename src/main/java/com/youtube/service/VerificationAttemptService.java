@@ -16,7 +16,7 @@ public class VerificationAttemptService {
     private VerificationAttemptRepository attemptRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public VerificationAttemptEntity incrementAttempt(String email, VerificationAttemptEntity attempt, LocalDateTime now) {
+    public VerificationAttemptEntity incrementAttempt(String email, VerificationAttemptEntity attempt) {
         if (attempt == null) {
             attempt = new VerificationAttemptEntity();
             attempt.setEmail(email);
@@ -24,7 +24,7 @@ public class VerificationAttemptService {
             return attemptRepository.save(attempt);
         }
         attempt.setAttemptCount(attempt.getAttemptCount() + 1);
-        attempt.setLastAttempt(now);
+        attempt.setLastAttempt(LocalDateTime.now());
         return attemptRepository.save(attempt);
     }
 
