@@ -1,0 +1,35 @@
+### CREATE
+POST localhost:8081/api/v1/playlist-video/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyODA0Njg2LCJleHAiOjE3ODI4OTEwODZ9.1i61LiEpka2YYALCa7Ug0Ig4uXlwd0upPa6FZQh5nhPzC9jX5zPSU0bvUCr7JoLt
+
+{
+  "orderNumber": 1,
+  "playlistId": 1,
+  "videoId": "f8f0f211-f00a-438a-a0f2-ca7f4d54df87"
+}
+
+### UPDATE
+PUT localhost:8081/api/v1/playlist-video/update
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNDQyMiwiZXhwIjoxNzgyOTAwODIyfQ.YF-77N7oJnidCLVcgRc373qdShm2NIUJP0Bm7q2XIOGq2sl0-AMgBWDsZJLGiAoO
+Content-Type: application/json
+
+{
+  "playlistId": 1,
+  "orderNumber": 5,
+  "videoId": "f8f0f211-f00a-438a-a0f2-ca7f4d54df87"
+}
+
+### LIST BY PLAYLIST ID (VIDEO STATUS PUBLISHED)
+GET localhost:8081/api/v1/playlist-video/get/video-list/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNDQyMiwiZXhwIjoxNzgyOTAwODIyfQ.YF-77N7oJnidCLVcgRc373qdShm2NIUJP0Bm7q2XIOGq2sl0-AMgBWDsZJLGiAoO
+
+### DELETE
+DELETE localhost:8081/api/v1/playlist-video/delete
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNDQyMiwiZXhwIjoxNzgyOTAwODIyfQ.YF-77N7oJnidCLVcgRc373qdShm2NIUJP0Bm7q2XIOGq2sl0-AMgBWDsZJLGiAoO
+Content-Type: application/json
+
+{
+  "videoId": "f8f0f211-f00a-438a-a0f2-ca7f4d54df87",
+  "playlistId": 1
+}

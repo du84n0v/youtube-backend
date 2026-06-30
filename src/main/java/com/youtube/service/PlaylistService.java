@@ -7,12 +7,14 @@ import com.youtube.dto.playlist.request.PlaylistUpdateStatusRequestDto;
 import com.youtube.dto.playlist.response.*;
 import com.youtube.entity.PlaylistEntity;
 import com.youtube.exception.AppBadException;
+import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.PlaylistRepository;
 import com.youtube.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,8 @@ public class PlaylistService {
         entity.setDescription(dto.getDescription());
         entity.setStatus(dto.getStatus());
         entity.setOrderNumber(dto.getOrderNumber());
+        entity.setCreatedDate(LocalDateTime.now());
+        playlistRepository.save(entity);
         return toDtoFromEntity(entity);
     }
 
@@ -45,11 +49,12 @@ public class PlaylistService {
     }
 
     public PlaylistResponseDto update(PlaylistUpdateRequestDto dto) {
-        Optional<PlaylistEntity> optional = playlistRepository.findById(dto.getId());
-        if (optional.isEmpty()){
-            throw new AppBadException("Playlist not found");
+        PlaylistEntity entity = playlistRepository.findById(dto.getId())
+                .orElseThrow(() -> new AppBadException("Playlist Not Found"));
+
+        if (!entity.getChannel().getProfileId().equals(SpringSecurityUtil.getCurrentProfileId())) {
+            throw new  AppBadException("Not Your Playlist");
         }
-        PlaylistEntity entity = optional.get();
         entity.setChannelId(dto.getChannelId());
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
@@ -60,11 +65,9 @@ public class PlaylistService {
     }
 
     public Boolean delete(Integer id) {
-        Optional<PlaylistEntity> optional = playlistRepository.findById(id);
-        if (optional.isEmpty()){
-            throw new AppBadException("Playlist not found");
-        }
-        PlaylistEntity entity = optional.get();
+        PlaylistEntity entity = playlistRepository.findById(id)
+                .orElseThrow(() -> new AppBadException("Playlist Not Found"));
+
         for (String currentProfileRole : SpringSecurityUtil.getCurrentProfileRoles()) {
             if (!currentProfileRole.equals("ADMIN")) {
                 if (!SpringSecurityUtil.getCurrentProfileId().equals(entity.getChannel().getProfileId())){
@@ -77,7 +80,8 @@ public class PlaylistService {
     }
 
     public PageImpl<PlaylistResponseDto> pagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdDate").descending());
+        int pageNumber = Math.max(page - 1, 0);
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by("createdDate").descending());
         Page<PlaylistEntity> result = playlistRepository.findAllVisibleTrue(pageable);
         return toPagWithFullInfo(result, pageable);
     }
@@ -108,7 +112,8 @@ public class PlaylistService {
     }
 
     public PageImpl<PlaylistShortInfoDto> shortInfoDtoPag(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("orderNumber").descending());
+        int  pageNumber = Math.max(page - 1, 0);
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by("orderNumber").descending());
         Page<PlaylistEntity> result = playlistRepository.findAllByOwnerId(SpringSecurityUtil.getCurrentProfileId(), pageable);
         return toPagWithUserJoinedShortInfo(result, pageable);
     }
@@ -137,8 +142,10 @@ public class PlaylistService {
 
         // PHOTO SHORT INFO DTO FOR CHANNEL
         PlaylistCustomizedPhotoShortInfoDto photo = new PlaylistCustomizedPhotoShortInfoDto();
-        photo.setId(entity.getChannel().getPhotoId());
-        photo.setPath(entity.getChannel().getPhoto().getPath());
+        if(entity.getChannel().getPhoto() != null){
+            photo.setId(entity.getChannel().getPhotoId());
+            photo.setPath(entity.getChannel().getPhoto().getPath());
+        }
 
         // SET PROFILE FOR CHANNEL
         channel.setProfile(toProfileShortInfoDto(entity));
@@ -159,8 +166,10 @@ public class PlaylistService {
 
         // PHOTO SHORT INFO DTO FOR PROFILE
         PlaylistCustomizedPhotoShortInfoDto photo = new PlaylistCustomizedPhotoShortInfoDto();
-        photo.setId(entity.getChannel().getOwner().getPhotoId());
-        photo.setPath(entity.getChannel().getOwner().getPhoto().getPath());
+        if(entity.getChannel().getOwner().getPhoto() != null){
+            photo.setId(entity.getChannel().getOwner().getPhotoId());
+            photo.setPath(entity.getChannel().getOwner().getPhoto().getPath());
+        }
 
         // SET PHOTO FOR PROFILE
         profile.setPhoto(photo);
@@ -168,12 +177,9 @@ public class PlaylistService {
     }
 
     public List<PlaylistShortInfoDto> listByChannelKey(String channelKey) {
-        Optional<List<PlaylistEntity>> optional = playlistRepository.findAllByChannelKey(channelKey);
-        if (optional.isEmpty()){
-            throw new AppBadException("Playlist not found");
-        }
+        List<PlaylistEntity> entities = playlistRepository.findAllByChannelKey(channelKey)
+                .orElseThrow(() -> new ItemNotFoundException("Playlist not found"));
         List<PlaylistShortInfoDto> response = new LinkedList<>();
-        List<PlaylistEntity> entities = optional.get();
         entities.forEach(entity -> {
             response.add(toShortInfoDto(entity));
         });
@@ -190,11 +196,13 @@ public class PlaylistService {
     }
 
     public PlaylistResponseDto updateStatus(PlaylistUpdateStatusRequestDto dto) {
-        Optional<PlaylistEntity> optional = playlistRepository.findById(dto.getId());
-        if (optional.isEmpty()){
-            throw new AppBadException("Playlist not found");
+        PlaylistEntity entity = playlistRepository.findById(dto.getId())
+                .orElseThrow(() -> new AppBadException("Playlist Not Found"));
+
+        if (!entity.getChannel().getProfileId().equals(SpringSecurityUtil.getCurrentProfileId())) {
+            throw new  AppBadException("Not Your Playlist");
         }
-        PlaylistEntity entity = optional.get();
+
         entity.setStatus(dto.getStatus());
         playlistRepository.save(entity);
         return toDtoFromEntity(entity);

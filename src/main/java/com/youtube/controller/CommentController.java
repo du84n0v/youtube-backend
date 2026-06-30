@@ -14,46 +14,46 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pai/v1/comment")
+@RequestMapping("/api/v1/comment")
 public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<CommentResDto>  create(@RequestBody CommentReqDto dto) {
         return ResponseEntity.ok(commentService.create(dto));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CommentResDto> update(@PathVariable Integer id, @RequestBody CommentReqDto dto) {
         return ResponseEntity.ok(commentService.update(id, dto));
     }
 
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CommentResDto> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(commentService.delete(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/pagination")
-    public ResponseEntity<PageImpl<CommentResDto>> pagination(@RequestParam(name = "page")  int page,
-                                                              @RequestParam(name = "size") int size) {
+    public ResponseEntity<PageImpl<CommentResDto>> pagination(@RequestParam(name = "page", defaultValue = "1")  int page,
+                                                              @RequestParam(name = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(commentService.pagination(PageUtil.page(page), size));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/list/{profileId}/")
+    @GetMapping("/profile/{profileId}")
     public ResponseEntity<List<CommentResDto>> list(@PathVariable Integer profileId) {
         return ResponseEntity.ok(commentService.listByProfileId(profileId));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/my")
     public ResponseEntity<List<CommentResDto>> listByCurrentProfile() {
         return ResponseEntity.ok(commentService.listByCurrentProfile());
     }
 
-    @GetMapping("/list/replies/{commentId}")
+    @GetMapping("/{commentId}/replies")
     public ResponseEntity<List<CommentInfoResDto>> replyListById(@PathVariable Integer commentId) {
         return ResponseEntity.ok(commentService.replyListById(commentId));
     }

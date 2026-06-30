@@ -18,26 +18,25 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/create")
-    public ResponseEntity<CategoryResponseDto>  create(@RequestBody CategoryRequestDto dto) {
+    @PostMapping
+    public ResponseEntity<CategoryResponseDto> create(@RequestBody CategoryRequestDto dto) {
         return ResponseEntity.ok(categoryService.create(dto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<CategoryResponseDto> update(@RequestBody CategoryUpdateRequestDto dto) {
         return ResponseEntity.ok(categoryService.update(dto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(categoryService.delete(id));
     }
 
-    @GetMapping("/get-all")
+    @GetMapping
     public ResponseEntity<List<CategoryResponseDto>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
-
 }

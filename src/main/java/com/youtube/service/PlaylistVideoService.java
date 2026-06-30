@@ -5,7 +5,9 @@ import com.youtube.dto.playlistVideo.request.PlaylistVideoReqDto;
 import com.youtube.dto.playlistVideo.response.*;
 import com.youtube.entity.PlaylistVideoEntity;
 import com.youtube.exception.AppBadException;
+import com.youtube.exception.ItemNotFoundException;
 import com.youtube.repository.PlaylistVideoRepository;
+import com.youtube.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class PlaylistVideoService {
         entity.setVideoId(dto.getVideoId());
         entity.setOrderNumber(dto.getOrderNumber());
         entity.setCreatedDate(LocalDateTime.now());
+        playlistVideoRepository.save(entity);
         return toDtoFromEntity(entity);
     }
 
@@ -38,15 +41,17 @@ public class PlaylistVideoService {
         return dto;
     }
 
-    public PlaylistVideoResDto udpate(PlaylistVideoReqDto dto) {
+    public PlaylistVideoResDto update(PlaylistVideoReqDto dto) {
         // FIND ENTITY
-        Optional<PlaylistVideoEntity> optional =  playlistVideoRepository.findById(dto.getPlaylistId());
-        if (optional.isEmpty()){
-            throw new AppBadException("Playlist Video Not Found");
-        }
+        PlaylistVideoEntity entity =  playlistVideoRepository.findById(dto.getPlaylistId())
+                .orElseThrow(() -> new ItemNotFoundException("Playlist Video Not Found"));
 
+        if (!SpringSecurityUtil.getCurrentProfileRoles().getFirst().equals("ROLE_ADMIN")) {
+            if (!entity.getPlaylist().getChannel().getOwner().getId().equals(SpringSecurityUtil.getCurrentProfileId())){
+                throw new AppBadException("You are not the owner of this playlist");
+            }
+        }
         // SET IF EXISTS
-        PlaylistVideoEntity entity = optional.get();
         entity.setOrderNumber(dto.getOrderNumber());
         entity.setVideoId(dto.getVideoId());
         entity.setPlaylistId(dto.getPlaylistId());
@@ -76,14 +81,11 @@ public class PlaylistVideoService {
     }
 
     public List<PlaylistVideoInfoResDto> getVideoList(Integer playlistId) {
-        Optional<List<PlaylistVideoEntity>> optional = playlistVideoRepository.findByPlaylistId(playlistId);
-        if (optional.isEmpty()){
-            throw new AppBadException("Playlist Video Not Found");
-        }
+        List<PlaylistVideoEntity> entities = playlistVideoRepository.findByPlaylistId(playlistId)
+                .orElseThrow(() -> new ItemNotFoundException("Playlist Video Not Found"));
 
         List<PlaylistVideoInfoResDto> response = new ArrayList<>();
 
-        List<PlaylistVideoEntity> entities = optional.get();
         entities.forEach(entity -> {
             response.add(toInfoDtoFromEntity(entity));
         });
