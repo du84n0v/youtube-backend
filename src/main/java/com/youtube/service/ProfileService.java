@@ -72,7 +72,7 @@ public class ProfileService {
 
         VerificationAttemptEntity attempt = attemptService.getByEmail(dto.getEmail());
         if (attempt == null) {
-            attempt = attemptService.incrementAttempt(dto.getEmail(), attempt, now);
+            attempt = attemptService.incrementAttempt(dto.getEmail(), attempt);
         }
 
         if (attempt.getAttemptCount() > 3 && attempt.getLastAttempt() != null) {
@@ -95,7 +95,7 @@ public class ProfileService {
         }
 
         if (!lastCode.getCode().equals(dto.getCode())) {
-            attempt = attemptService.incrementAttempt(dto.getEmail(), attempt, now);
+            attempt = attemptService.incrementAttempt(dto.getEmail(), attempt);
 
             int remaining = 3 - attempt.getAttemptCount();
             throw new AppBadException("Wrong code: " + (remaining > 0 ? remaining + " attempts left" : "Please try 2 minutes later"));

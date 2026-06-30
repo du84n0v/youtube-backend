@@ -46,6 +46,8 @@ public class AuthService {
     private EmailHistoryRepository emailHistoryRepository;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private VerificationAttemptService attemptService;
 
     public String register(RegisterDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
@@ -84,13 +86,10 @@ public class AuthService {
         LocalDateTime now = LocalDateTime.now();
         VerificationAttemptEntity attempt = attemptRepository.findByEmail(dto.getEmail());
         if(attempt == null){
-            VerificationAttemptEntity verificationAttempt = new VerificationAttemptEntity();
-            verificationAttempt.setEmail(dto.getEmail());
-            verificationAttempt.setAttemptCount(0);
-            attempt = attemptRepository.save(verificationAttempt);
+            attempt = attemptService.incrementAttempt(dto.getEmail(), attempt);
         }
 
-        if(attempt.getAttemptCount() >= 5 && attempt.getLastAttempt() != null){
+        if(attempt.getAttemptCount() >= 3 && attempt.getLastAttempt() != null){
             LocalDateTime expiryTime = attempt.getLastAttempt().plusMinutes(2);
             if(expiryTime.isAfter(now)){
                 throw new AppBadException("Too many attempt. Please wait 2 minutes");
@@ -105,11 +104,9 @@ public class AuthService {
             throw new AppBadException("Code is expired. Please click resend to get new code");
         }
         if(lastCode != null && !lastCode.getCode().equals(dto.getCode())){
-            attempt.setAttemptCount(attempt.getAttemptCount()+1);
-            attempt.setLastAttempt(now);
-            attemptRepository.save(attempt);
+            attempt = attemptService.incrementAttempt(dto.getEmail(), attempt);
 
-            int remaining = 5 - attempt.getAttemptCount();
+            int remaining = 3 - attempt.getAttemptCount();
             throw new AppBadException("Wrong code: " + (remaining > 0 ? remaining + "-attempt left" : "Please try 2 minutes later"));
         }
 
