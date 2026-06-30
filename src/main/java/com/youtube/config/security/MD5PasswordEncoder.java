@@ -26,7 +26,7 @@ public class MD5PasswordEncoder implements PasswordEncoder {
                 hexString.append(hex);
             }
             
-            return hexString.toString(); // 32 belgili xesh qaytadi
+            return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("something went wrong!", e);
         }
