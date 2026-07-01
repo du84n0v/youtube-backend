@@ -1,0 +1,38 @@
+### CREATE
+POST localhost:8081/api/v1/comment
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgyNjcxNiwiZXhwIjoxNzgyOTEzMTE2fQ.ezzdZ_kmkPR2IN7-ZIixctO-sF_R1YpsUFMgUxCdP26XQG8k6NlJzbPdR5nTplZD
+Content-Type: application/json
+
+{
+  "videoId": "25404129-d7cb-482c-88e6-d80a08aec9ec",
+  "content": "Uzbekistan took the fucking 47th place out of 48 countries"
+}
+
+### UPDATE
+PUT localhost:8081/api/v1/comment/update/2
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNDQyMiwiZXhwIjoxNzgyOTAwODIyfQ.YF-77N7oJnidCLVcgRc373qdShm2NIUJP0Bm7q2XIOGq2sl0-AMgBWDsZJLGiAoO
+Content-Type: application/json
+
+{
+  "content": "Im not sure about that",
+  "videoId": "f8f0f211-f00a-438a-a0f2-ca7f4d54df87",
+  "replyId": 2
+}
+
+### PAGINATION
+GET localhost:8081/api/v1/comment/pagination
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoxLCJzdWIiOiJqeml5b2R1bGxheWV2Njc4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNjQxNiwiZXhwIjoxNzgyOTAyODE2fQ.YtLkbNZSGr1G0Wu7I6UHW-HqeiRqjiqvlMj4YvW1rF3-oXC6IgHJB6ENRUe6OdS8
+
+### LIST BY PROFILE ID
+GET localhost:8081/api/v1/comment/list/2
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoxLCJzdWIiOiJqeml5b2R1bGxheWV2Njc4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNjQxNiwiZXhwIjoxNzgyOTAyODE2fQ.YtLkbNZSGr1G0Wu7I6UHW-HqeiRqjiqvlMj4YvW1rF3-oXC6IgHJB6ENRUe6OdS8
+
+
+### LIST BY CURRENT PROFILE ID
+GET localhost:8081/api/v1/comment/list
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNDQyMiwiZXhwIjoxNzgyOTAwODIyfQ.YF-77N7oJnidCLVcgRc373qdShm2NIUJP0Bm7q2XIOGq2sl0-AMgBWDsZJLGiAoO
+
+
+### LIST BY COMMENT ID
+GET localhost:8081/api/v1/comment/list/replies/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp1bmlvcmRldmVsb3BlcjA4QGdtYWlsLmNvbSIsImlhdCI6MTc4MjgxNDQyMiwiZXhwIjoxNzgyOTAwODIyfQ.YF-77N7oJnidCLVcgRc373qdShm2NIUJP0Bm7q2XIOGq2sl0-AMgBWDsZJLGiAoO
