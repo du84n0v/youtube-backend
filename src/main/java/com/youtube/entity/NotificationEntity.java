@@ -40,7 +40,7 @@ public class NotificationEntity {
     private String message;
 
     @Column(name = "is_received")
-    private Boolean isReceived = false;
+    private Boolean isProfileReceived = false;
 
     @Column(name = "created_date")
     @CreationTimestamp
