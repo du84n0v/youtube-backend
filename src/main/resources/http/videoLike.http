@@ -1,0 +1,27 @@
+### CREATE
+POST http://localhost:8081/api/v1/video-like
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoxLCJzdWIiOiJqdW5pb3JkZXZlbG9wZXIwOEBnbWFpbC5jb20iLCJpYXQiOjE3ODI4NDczMDQsImV4cCI6MTc4MjkzMzcwNH0.iN46KOVmXLtxLE4FWA5aGMdHG6HTU5GA6uVXOkeKdlF22Zm9UgdvqTvNUshP6Cwd
+
+{
+  "videoId": "25404129-d7cb-482c-88e6-d80a08aec9ec",
+  "emotion": "DISLIKE"
+}
+
+### REMOVE
+DELETE localhost:8081/api/v1/video_like/remove
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyODA0Njg2LCJleHAiOjE3ODI4OTEwODZ9.1i61LiEpka2YYALCa7Ug0Ig4uXlwd0upPa6FZQh5nhPzC9jX5zPSU0bvUCr7JoLt
+Content-Type: application/json
+
+{
+  "videoId": "f8f0f211-f00a-438a-a0f2-ca7f4d54df87"
+}
+
+### LIST BY CURRENT PROFILE ID
+GET localhost:8081/api/v1/video_like/list/user-liked
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjEsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyODA0Njg2LCJleHAiOjE3ODI4OTEwODZ9.1i61LiEpka2YYALCa7Ug0Ig4uXlwd0upPa6FZQh5nhPzC9jX5zPSU0bvUCr7JoLt
+
+### LIST BY PROFILE ID
+GET localhost:8081/api/v1/video_like/list/user-liked/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJqdW5pb3JkZXZlbG9wZXIwOEBnbWFpbC5jb20iLCJpYXQiOjE3ODI4MTc5NTQsImV4cCI6MTc4MjkwNDM1NH0.0yGaZUfmOs-_M1ExEUo6u9_afFvcNODSAeVaoks-63DnqjwEO9R3ubb5SP-zYl_a
+

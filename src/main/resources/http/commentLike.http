@@ -1,0 +1,26 @@
+### CREATE
+POST localhost:8081/api/v1/comment-like
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwiaWQiOjIsInN1YiI6Imp6aXlvZHVsbGF5ZXY2NzhAZ21haWwuY29tIiwiaWF0IjoxNzgyODMzMjk4LCJleHAiOjE3ODI5MTk2OTh9.-ULtDRKDKDRUCW4h4DpNP5NDrVTTnvmDArgbw8c_AYB0L7JOVaHXcu6OZoPxvo2u
+Content-Type: application/json
+
+{
+  "commentId": 1,
+  "emotion": "LIKE"
+}
+
+### UPDATE
+DELETE localhost:8081/api/v1/comment_like/remove
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJqdW5pb3JkZXZlbG9wZXIwOEBnbWFpbC5jb20iLCJpYXQiOjE3ODI4MTc5NTQsImV4cCI6MTc4MjkwNDM1NH0.0yGaZUfmOs-_M1ExEUo6u9_afFvcNODSAeVaoks-63DnqjwEO9R3ubb5SP-zYl_a
+Content-Type: application/json
+
+{
+  "commentId": 2
+}
+
+### LIST BY PROFILE ID
+GET localhost:8081/api/v1/comment_like/list/user-liked/2
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJqdW5pb3JkZXZlbG9wZXIwOEBnbWFpbC5jb20iLCJpYXQiOjE3ODI4MTc5NTQsImV4cCI6MTc4MjkwNDM1NH0.0yGaZUfmOs-_M1ExEUo6u9_afFvcNODSAeVaoks-63DnqjwEO9R3ubb5SP-zYl_a
+
+### LIST BY CURRENT PROFILE ID
+GET localhost:8081/api/v1/comment_like/list/user-liked
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImlkIjoyLCJzdWIiOiJqdW5pb3JkZXZlbG9wZXIwOEBnbWFpbC5jb20iLCJpYXQiOjE3ODI4MTc5NTQsImV4cCI6MTc4MjkwNDM1NH0.0yGaZUfmOs-_M1ExEUo6u9_afFvcNODSAeVaoks-63DnqjwEO9R3ubb5SP-zYl_a
