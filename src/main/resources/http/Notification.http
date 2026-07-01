@@ -1,0 +1,37 @@
+### Filter notification with pagination - barcha parametrlar bilan
+POST localhost:8081/api/v1/notification/filter?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "profileId": 1,
+  "channelId": "5f239ee6-327d-46f9-87a1-52f4e0e4897c",
+  "videoId": "5f239ee6-327d-46f9-87a1-52f4e0e4897c",
+  "dateFrom": "2026-06-01",
+  "dateTo": "2026-07-02",
+  "isProfileReceived": false
+}
+
+### Filter notification - faqat profile bo'yicha (qolganlari null)
+POST localhost:8081/api/v1/notification/filter?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "profileId": 1,
+  "channelId": null,
+  "videoId": null,
+  "dateFrom": null,
+  "dateTo": null,
+  "isProfileReceived": null
+}
+
+### Filter notification - faqat sana oralig'i bo'yicha
+POST localhost:8081/api/v1/notification/filter?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "dateFrom": "2026-06-25",
+  "dateTo": "2026-07-02"
+}
