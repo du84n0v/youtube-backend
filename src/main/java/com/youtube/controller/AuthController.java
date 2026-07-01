@@ -8,10 +8,7 @@ import com.youtube.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -21,17 +18,22 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO dto){
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO dto) {
         return ResponseEntity.ok(authService.register(dto));
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<String> verify(@Valid @RequestBody VerificationDTO dto){
+    public ResponseEntity<String> verify(@Valid @RequestBody VerificationDTO dto) {
         return ResponseEntity.ok(authService.verify(dto));
     }
 
+    @PostMapping("/resend-code")
+    public ResponseEntity<String> resendCode(@RequestParam String email){
+        return ResponseEntity.ok(authService.resendCode(email));
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<ProfileResponseDTO> login(@Valid @RequestBody LoginDTO login){
+    public ResponseEntity<ProfileResponseDTO> login(@Valid @RequestBody LoginDTO login) {
         return ResponseEntity.ok(authService.login(login));
     }
 

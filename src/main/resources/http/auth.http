@@ -18,6 +18,9 @@ Content-Type: application/json
   "code": ""
 }
 
+###resend code
+POST localhost:8080/api/v1/auth/resend-code?email=forexmaple@gmail.com
+
 ###login
 POST localhost:8080/api/v1/auth/login
 Content-Type: application/json
