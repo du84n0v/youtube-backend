@@ -28,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -51,11 +52,10 @@ public class AuthService {
 
     public String register(RegisterDTO dto) {
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
-        if(optional.isPresent()){
-            if(optional.get().getStatus().equals(ProfileStatusEnum.IN_REGISTRATION)){
+        if (optional.isPresent()) {
+            if (optional.get().getStatus().equals(ProfileStatusEnum.IN_REGISTRATION)) {
                 profileRepository.delete(optional.get());
-            }
-            else {
+            } else {
                 throw new AppBadException("User already exists");
             }
         }
@@ -71,7 +71,8 @@ public class AuthService {
 
         mailSenderService.verificationCode(profile.getEmail(), EmailCodeTypeEnum.REGISTRATION);
 
-        VerificationAttemptEntity attempt = new VerificationAttemptEntity();
+        VerificationAttemptEntity attempt = attemptRepository.findByEmail(dto.getEmail());
+        if (attempt == null) attempt = new VerificationAttemptEntity();
         attempt.setEmail(dto.getEmail());
         attempt.setAttemptCount(0);
         attempt.setLastAttempt(LocalDateTime.now());
@@ -85,25 +86,24 @@ public class AuthService {
     public String verify(VerificationDTO dto) {
         LocalDateTime now = LocalDateTime.now();
         VerificationAttemptEntity attempt = attemptRepository.findByEmail(dto.getEmail());
-        if(attempt == null){
+        if (attempt == null) {
             attempt = attemptService.incrementAttempt(dto.getEmail(), attempt);
         }
 
-        if(attempt.getAttemptCount() >= 3 && attempt.getLastAttempt() != null){
+        if (attempt.getAttemptCount() >= 3 && attempt.getLastAttempt() != null) {
             LocalDateTime expiryTime = attempt.getLastAttempt().plusMinutes(2);
-            if(expiryTime.isAfter(now)){
+            if (expiryTime.isAfter(now)) {
                 throw new AppBadException("Too many attempt. Please wait 2 minutes");
-            }
-            else{
+            } else {
                 attempt.setAttemptCount(0);
             }
         }
 
         EmailHistoryEntity lastCode = emailHistoryRepository.findTopByToEmailOrderByCreatedDateDesc(dto.getEmail());
-        if(lastCode != null && lastCode.getCreatedDate().plusMinutes(2).isBefore(now)){
+        if (lastCode != null && lastCode.getCreatedDate().plusMinutes(2).isBefore(now)) {
             throw new AppBadException("Code is expired. Please click resend to get new code");
         }
-        if(lastCode != null && !lastCode.getCode().equals(dto.getCode())){
+        if (lastCode != null && !lastCode.getCode().equals(dto.getCode())) {
             attempt = attemptService.incrementAttempt(dto.getEmail(), attempt);
 
             int remaining = 3 - attempt.getAttemptCount();
@@ -111,7 +111,7 @@ public class AuthService {
         }
 
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
-        if(optional.isEmpty()) {
+        if (optional.isEmpty()) {
             throw new ItemNotFoundException("User not found");
         }
         ProfileEntity profile = optional.get();
@@ -153,5 +153,33 @@ public class AuthService {
             throw new AppBadException("This user is not active");
         }
         throw new AppBadException("Username or password wrong");
+    }
+
+    public String resendCode(String email) {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        VerificationAttemptEntity attempt = attemptRepository.findByEmail(email);
+        if (attempt == null) {
+            attempt = new VerificationAttemptEntity();
+            attempt.setEmail(email);
+            attempt.setResendCount(1);
+            attempt.setLastResendTime(now);
+            attempt = attemptRepository.save(attempt);
+        }
+
+        if (attempt.getLastResendTime() != null) {
+            LocalDateTime limit = attempt.getLastResendTime().plusMinutes(1);
+            if (limit.isAfter(now)) {
+                long remain = Duration.between(now, limit).toSeconds();
+                throw new AppBadException("Wait " + remain + "-second to resend code");
+            }
+        }
+
+        mailSenderService.verificationCode(email, EmailCodeTypeEnum.REGISTRATION);
+        attempt.setLastResendTime(now);
+        attempt.setAttemptCount(0);
+        attemptRepository.save(attempt);
+        return "Code sent to your email. Please check email";
     }
 }
